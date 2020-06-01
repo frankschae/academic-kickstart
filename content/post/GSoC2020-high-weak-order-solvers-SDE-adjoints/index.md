@@ -109,7 +109,7 @@ In the next couple of weeks, my focus will be on
 More of our near-term goals are collected in this [issue](https://github.com/SciML/StochasticDiffEq.jl/issues/182).
 
 
-## Adjoint sensitivity methods for SDEs
+## Adjoint Sensitivity Methods for SDEs
 
 The adjoint sensitivity method is well known to compute gradients of solutions to ordinary differential equations (ODEs). Recently, this method was generalized to SDEs[^3]. Importantly, this new method has different complexities in terms of memory consumption or computation time as compared with forward- or reverse-mode automatic differentiation (AD) approaches. While forward mode AD is memory efficient, it scales poorly in time with increasing number of parameters. On the contrary, reverse-mode AD, i.e., a direct backpropagation through the solver, has a huge memory footprint.
 
@@ -223,7 +223,7 @@ resp2 = 2*sum(@. Wextracted*u₀^2*exp(2*(p2[1])*tarray+2*p2[2]*Wextracted))
 resp = [resp1, resp2]
 
 @test isapprox(res_p', resp, rtol = 1e-6)
-# True 
+# True
 ```
 
 With respect to the adjoint sensitivity methods, we are looking forward
