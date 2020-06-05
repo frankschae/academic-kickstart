@@ -75,4 +75,4 @@ user_groups:
 ---
 
 I am a PhD candidate in physics within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel.
-Currently, I am participating in the Google Summer of Code 2020 program.  My project focusses on the implementation of  "High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations" in Julia. The project is carried in collaboration with my mentors Chris Rackauckas, Moritz Schauer, and Yingbo Ma.
+Currently, I am participating in the Google Summer of Code 2020 program.  My project focuses on the implementation of  "High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations" in Julia. The project is carried in collaboration with my mentors Chris Rackauckas, Moritz Schauer, and Yingbo Ma.
