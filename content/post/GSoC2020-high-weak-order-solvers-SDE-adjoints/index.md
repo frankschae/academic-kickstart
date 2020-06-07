@@ -5,7 +5,7 @@ title: "GSoC 2020: High weak order SDE solvers and their utility in neural SDEs"
 subtitle: "Community bonding period"
 summary: ""
 authors: []
-tags: [GSoC 2020, High weak order solver, SRK methods, Adjoint sensitivity methods]
+tags: [GSoC 2020, julia, High weak order solver, SRK methods, Adjoint sensitivity methods]
 categories: []
 date: 2020-05-30T15:10:33+02:00
 lastmod: 2020-05-30T15:10:33+02:00
@@ -136,7 +136,7 @@ While forward mode AD is memory efficient, it scales poorly in time with increas
 Alternatively to the "direct" AD approaches, the **adjoint sensitivity method** can be used[^4]. The adjoint sensitivity method is well known to compute gradients of solutions to ordinary differential equations (ODEs) with respect to the parameters and initial states entering the ODE. The method was recently generalized to SDEs[^3].
 Importantly, this new approach has different complexities in terms of memory consumption or computation time as compared with forward- or reverse-mode AD (NP vs N+P where N is the number of state variables and P is the number of parameters).
 
-It turns out that the aforementioned gradients in the stochastic adjoint sensitivity method are given by solving an SDE with an **augmented state backwards in time** from the end state of the forward evolution.  In other words, we first compute the forward time evolution of the model from the start time $t_0$ to the end time $t_1$. Subsequently, we reverse the SDE and run a second time evolution from $t_1$ to $t_0$. Please note that the authors in Ref. [^3] are implementing a slightly modfified version where the time evolution of the augmented state runs from $-t_1$ to $-t_0$. We however are indeed using the former variant as it allows us to reuse/generalize many functions that were implemented in the [DiffEqSensitivity](https://github.com/SciML/DiffEqSensitivity.jl/) package for ODE adjoints earlier.
+It turns out that the aforementioned gradients in the stochastic adjoint sensitivity method are given by solving an SDE with an **augmented state backwards in time** launched at the end state of the forward evolution.  In other words, we first compute the forward time evolution of the model from the start time $t_0$ to the end time $t_1$. Subsequently, we reverse the SDE and run a second time evolution from $t_1$ to $t_0$. Please note that the authors in Ref. [^3] are implementing a slightly modfified version where the time evolution of the augmented state runs from $-t_1$ to $-t_0$. We however are indeed using the former variant as it allows us to reuse/generalize many functions that were implemented in the [DiffEqSensitivity](https://github.com/SciML/DiffEqSensitivity.jl/) package for ODE adjoints earlier.
 
 
 ### Reverse SDE time evolution
@@ -144,7 +144,7 @@ It turns out that the aforementioned gradients in the stochastic adjoint sensiti
 The reversion of an SDE is more difficult than the reversion of an ODE. However, for SDEs written in the Stratonovich sense, it turns out that reversion can be achieved by negative signs in front of the drift and diffusion terms.
 As one needs to follow the same trajectory backward, the noise sampled in the forward pass must be reconstructed.
 In general, we would like to use adaptive time-stepping solvers which require some form of interpolation for the noise values.
-After some fixes for the [available noise processes](https://docs.sciml.ai/latest/features/noise_process/#Adaptive-NoiseWrapper-Example-1), we are now able to reverse a stochastic time evolution either by using `NoiseGrid` which linearly interpolates between values of the noise on a given grid or by using a very general `NoiseWrapper` that interpolates in a distributionally-exact manner based on Brownian bridges.
+After some fixes for the [available noise processes](https://docs.sciml.ai/latest/features/noise_process/#Adaptive-NoiseWrapper-Example-1), we are now able to reverse a stochastic time evolution either by using `NoiseGrid` which linearly interpolates between values of the noise on a given grid or by using a very general `NoiseWrapper` which interpolates in a distributionally-exact manner based on Brownian bridges.
 
 As an example, the code below computes first the forward evolution of an SDE
 
