@@ -257,12 +257,12 @@ resp = [resp1, resp2]
 # True
 ```
 
-With respect to the adjoint sensitivity methods, we are looking forward to
+With respect to the adjoint sensitivity methods, we are planning to
 
-* finishing the current backsolve adjoint version,
-* allowing for computing the gradients of non-commuting SDEs,
-* implementing also an interpolation adjoint version,
-* benchmarking it with respect to AD approaches
+* finish the current backsolve adjoint version,
+* allow for computing the gradients of non-commuting SDEs,
+* implement also an interpolation adjoint version,
+* benchmark it with respect to AD approaches
 
 
 in the upcoming weeks. For more information, the interested reader might take a look at the open [issues](https://github.com/SciML/DiffEqSensitivity.jl/issues) in the DiffEqSensitivity package.
