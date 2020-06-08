@@ -55,13 +55,13 @@ In the beginning of the community bonding period I finished the implementations 
 As an example, we can check the second order convergence property on a multi-dimensional SDE with non-commuting noise[^1]:
 
 $$
-\scriptstyle d \begin{pmatrix} X^1 \\\\  X^2 \end{pmatrix} = \begin{pmatrix} -\frac{273}{512} &  \phantom{X^2}0 \\\\  -\frac{1}{160} \phantom{X^2}  & -\frac{785}{512}+\frac{\sqrt{2}}{8} \end{pmatrix}  \begin{pmatrix} X^1 \\\\  X^2 \end{pmatrix} dt + \begin{pmatrix} \frac{1}{4} X^1 &  \frac{1}{16} X^1 \\\\  \frac{1-2\sqrt{2}}{4} X^2 & \frac{1}{10}X^1  +\frac{1}{16} X^2 \end{pmatrix} d \begin{pmatrix} W^1 \\\\  W^2 \end{pmatrix}    
+\scriptstyle d \begin{pmatrix} X_1 \\\\  X_2 \end{pmatrix} = \begin{pmatrix} -\frac{273}{512} &  \phantom{X_2}0 \\\\  -\frac{1}{160} \phantom{X_2}  & -\frac{785}{512}+\frac{\sqrt{2}}{8} \end{pmatrix}  \begin{pmatrix} X_1 \\\\  X_2 \end{pmatrix} dt + \begin{pmatrix} \frac{1}{4} X_1 &  \frac{1}{16} X_1 \\\\  \frac{1-2\sqrt{2}}{4} X_2 & \frac{1}{10}X_1  +\frac{1}{16} X_2 \end{pmatrix} d \begin{pmatrix} W_1 \\\\  W_2 \end{pmatrix}    
 $$
 
 
 with initial value $$ X(t=0)=  \begin{pmatrix} 1 \\\\ 1\end{pmatrix}.$$
 
-For the function $f(x)=(x^1)^2$, we can analytically compute the expected value of the solution
+For the function $f(x)=(x_1)^2$, we can analytically compute the expected value of the solution
 
 $$ \rm{E}\left[ f(X(t)) \right] =  \exp(-t),$$
 
@@ -110,7 +110,7 @@ LinearAlgebra.norm(Statistics.mean(sol.u)-exp(-tspan[2]))
 
 Repeating this procedure for some more values of `dt`, the log-log plot of the error as a function of `dt` displays nicely the second order convergence (slope $\approx 2.2$).
 
-{{< figure library="true" src="DRI1.pdf" title="" lightbox="true" >}}
+{{< figure library="true" src="DRI1.png" title="" lightbox="true" >}}
 
 
 In the next couple of weeks, my focus will be on
@@ -257,12 +257,12 @@ resp = [resp1, resp2]
 # True
 ```
 
-With respect to the adjoint sensitivity methods, we are looking forward
+With respect to the adjoint sensitivity methods, we are looking forward to
 
-* to finish the current backsolve adjoint version,
-* to allow for computing the gradients of non-commuting SDEs,
-* to implement also an interpolation adjoint version,
-* to benchmark it with respect to AD approaches
+* finishing the current backsolve adjoint version,
+* allowing for computing the gradients of non-commuting SDEs,
+* implementing also an interpolation adjoint version,
+* benchmarking it with respect to AD approaches
 
 
 in the upcoming weeks. For more information, the interested reader might take a look at the open [issues](https://github.com/SciML/DiffEqSensitivity.jl/issues) in the DiffEqSensitivity package.
