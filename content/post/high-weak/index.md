@@ -5,10 +5,10 @@ title: "High weak order SDE solvers"
 subtitle: ""
 summary: ""
 authors: []
-tags: [GSoC 2020, High weak order solver, SRK methods]
+tags: [GSoC 2020, julia, High weak order solver, SRK methods]
 categories: []
 date: 2020-08-17T14:46:35+02:00
-lastmod: 2020-08-17T14:46:35+02:00
+lastmod: 2020-08-18T21:00:00+02:00
 featured: false
 draft: false
 
