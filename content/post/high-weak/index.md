@@ -195,7 +195,7 @@ sim = test_convergence(dts,ensemble_prob,DRI1(),
 ```
 
 The last line computes the weak convergence with respect to the final time point for the `DRI1()` scheme.
-Repeating the call to the `test_convergence()` function for the other solvers, we obtain the convergence plot:
+Repeating this call to the `test_convergence()` function for the other aforementioned solvers, we obtain the convergence plot:
 
 
 {{< figure library="true" src="weak_conv.png" title="" lightbox="true" >}}
