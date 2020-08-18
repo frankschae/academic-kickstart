@@ -303,7 +303,7 @@ simulates the stochastic version of the Brusselator equations with intitial cond
 
 $$ X(t=0)=  \begin{pmatrix} 0.1 \\\\ 0\end{pmatrix},$$
 
-on a time span $\mathbb{I}=[0, 100]$.
+on a time span $\mathbb{I}=[0, 100]$ for adaptive (`sol`) and fixed step sizes (`sol_na`).
 
 {{< figure library="true" src="Brusselator_many_trajectories.png" title="" lightbox="true" >}}
 
@@ -312,6 +312,9 @@ We can confirm Rößler's observation in his paper[^4] that the adaptive scheme
 as oscillations are damped out stronger for the fixed step size method, thus approaching the origin too rapidly.
 
 ```julia
+using DifferentialEquations.EnsembleAnalysis
+meansol = timeseries_steps_mean(sol)
+meansol_na = timeseries_point_mean(sol_na,meansol.t)
 dts = []
 tmp1 = tspan[1]
 for tmp2 in meansol.t
