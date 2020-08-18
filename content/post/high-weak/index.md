@@ -30,15 +30,11 @@ projects: []
 
 
 This post summarizes our new [high weak order methods](https://diffeq.sciml.ai/dev/solvers/sde_solve/#High-Weak-Order-Methods-1)
-for the [SciML](https://sciml.ai) ecosystem, as implemented within the
-[Google Summer of Code 2020](https://summerofcode.withgoogle.com/organizations/6363760870031360/?sp-page=2#5505348691034112) project.
+for the [SciML](https://sciml.ai) ecosystem, as implemented within the [Google Summer of Code 2020](https://summerofcode.withgoogle.com/organizations/6363760870031360/?sp-page=2#5505348691034112) project.
 
-Starting from an introductory part highlighting the differences between the strong and
-the weak approximation for stochastic differential equations, we look into the convergence and
-performance properties of a few representative new methods in case of a non-commutative noise process.
-Based on the stochastic version of the Brusselator equations, we showcase how adaptive step-size
-control for the weak solvers can result in a better approximation of the system dynamics. Finally,
-we discuss how to run simulations on GPU hardware.
+After an introductory part highlighting the differences between the strong and the weak approximation for stochastic differential equations, we look into the convergence and performance properties of a few representative new methods in case of a non-commutative noise process.
+Based on the stochastic version of the Brusselator equations, we demonstrate how adaptive step-size control for the weak solvers can result in a better approximation of the system dynamics.
+Finally, we discuss how to run simulations on GPU hardware.
 
 Throughout this post, we shall use the vector notation $X(t)$ to denote the solution of the *d*-dimensional Ito SDE
 system
@@ -49,15 +45,15 @@ $$
 
 with an *m*-dimensional driving Wiener process *W(t)* in the time span $\mathbb{I}=[t_0, T]$, where $a: \mathbb{I}\times\mathbb{R}^d \rightarrow \mathbb{R}^d$
 and $b: \mathbb{I}\times \mathbb{R}^{d} \rightarrow \mathbb{R}^{d \times m}$ are continuous functions which fulfill a global Lipschitz condition.[^1]
-For simplicity, we write $X(t)$ for both time discrete approximations and continuous time random variables in the following.
+For simplicity, we write $X(t)$ for both time-discrete approximations and continuous-time random variables in the following.
 
 
 ## Strong convergence
 
-Suppose that we encounter the following problem: Given **noisy** (e.g., originating from measurement noise)
-observations $Z(t)$, what is the best estimate $\hat{X}(t)$ of a stochastic system $X(t)$
+Suppose that we encounter the following problem: Given **noisy** observations $Z(t)$ (e.g., originating from measurement noise),
+what is the best estimate $\hat{X}(t)$ of a stochastic system $X(t)$
 satisfying the form above. Intuitively, we aim at filtering away the noise from the observations in an optimal way.
-Thus, such tasks are well known as filtering problems.
+Such tasks are well known as filtering problems.
 
 To solve a filtering problem, we need a solver whose sample paths $Y(t)$ are close to the ones of the
 stochastic process $X(t)$, i.e., the solver should allow us to reconstruct correctly the numerical solution of each single trajectory of
@@ -65,11 +61,11 @@ an SDE.
 
 Introducing the absolute error at the final time $T$ as
 $$
-  \epsilon(\delta) =  \rm{E}(|X(T) -Y(T)|) \leq \sqrt{\rm{E}(|X(T)-Y(T)|^2)},
+  \rm{E}(|X(T) -Y(T)|) \leq \sqrt{\rm{E}(|X(T)-Y(T)|^2)},
 $$
 we define convergence in the **strong sense** with order $p$ of a time discrete approximation $Y(T)$ with step size $h$
-to the solution $X(T)$ of a SDE at time $T$ if there exists a finite constant $C$ (independent of $h$)
-and a positive constant $\delta > 0$ such that
+to the solution $X(T)$ of a SDE at time $T$ if there exists a constant $C$ (independent of $h$)
+and a constant $\delta > 0$ such that
 $$
   \rm{E}(|X(T) -Y(T)|) \leq C \cdot h^p,
 $$
@@ -86,16 +82,13 @@ in the case of non-commutative noise processes.[^2] Currently, we are also [impl
 
 ## Weak convergence
 
-Instead of an accurate pathwise approximation of a stochastic process, we only require an estimation for
-the **expected value of the solution** in many situations. Then, methods for the **weak approximation** are sufficient and -- due to the less restrictive formulation of the objective -- those solvers are computationally cheaper than their strong counterparts.
-For example, weak solvers are very efficient for simulations in quantum optics,
-if only mean values of many trajectories are required, e.g., when the expectation values of variables such as position and
-momentum operators are computed in the phase space framework (Wigner functions, positive P-functions, etc.) of quantum mechanics. Thus, our new contributions are particularly appealing for many-body simulations, which are the computationally
-most demanding problems in quantum mechanics.
+Instead of an accurate pathwise approximation of a stochastic process, we only require an estimation for the **expected value of the solution** in many situations. In these cases, methods for the **weak approximation** are sufficient and -- due to the less restrictive formulation of the objective -- those solvers are computationally cheaper than their strong counterparts.
+For example, weak solvers are very efficient for simulations in quantum optics, if only mean values of many trajectories are required, e.g., when the expectation values of variables such as position and momentum operators are computed in the phase space framework (Wigner functions, positive P-functions, etc.) of quantum mechanics.
+Our new contributions are particularly appealing for many-body simulations, which are the computationally most demanding problems in quantum mechanics.
 
-We define convergence in the **weak sense** with order $p$ of a time discrete approximation $Y(T)$ with step size $h$
-to the solution $X(T)$ of a SDE at time $T$ if there exists a finite constant $C$ (independent of $h$)
-and a positive constant $\delta > 0$ such that
+We define convergence in the **weak sense** with order $p$ of a time-discrete approximation $Y(T)$ with step size $h$
+to the solution $X(T)$ of a SDE at time $T$ if there exists a constant $C$ (independent of $h$)
+and a constant $\delta > 0$ such that
 $$
   |\rm{E}(g(X(T))) -\rm{E}(g(Y(T)))| \leq C \cdot h^p,
 $$
@@ -104,7 +97,7 @@ $~$
 for any polynomial $g$ for each $h \in [0, \delta]$.
 
 
-We demonstrate below that **high weak order solvers** are specifically appealing, as they allow for using much larger time steps while attaining the same error in the mean, as compared with SDE solvers possessing a smaller weak order convergence.
+We demonstrate below that **high weak order solvers** are specifically appealing, as they allow for using much larger time steps while attaining the same error in the mean, as compared with SDE solvers possessing a smaller weak-order convergence.
 
 
 
@@ -112,7 +105,7 @@ We demonstrate below that **high weak order solvers** are specifically appealing
 
 A list of all new weak solvers is available in the [SciML documentation](https://diffeq.sciml.ai/dev/solvers/sde_solve/#High-Weak-Order-Methods-1).
 Note that we also implemented methods designed for the Stratonovich sense.
-For the subsequent examples regarding Ito SDEs, we use only a subset of the plethora of second order weak solvers.
+For the subsequent examples regarding Ito SDEs, we use only a subset of the plethora of second-order weak solvers.
 We employ the `DRI1()`[^3], `RD1WM()`[^4], and `RD2WM()`[^4] methods due to Debrabant \& Rößler and Platen's `PL1WM()`[^1] method.
 We compare those methods to the strong Euler-Maruyama `EM()`[^1] and the simplified Euler-Maruyama `SimplifiedEM()`[^1] schemes.
 The latter is the simplest weak solver, where the Gaussian increments of the strong Euler-Maruyama scheme are replaced by
@@ -131,7 +124,7 @@ $$
 $$
 
 with initial value
-$~$
+$$ ~$$
 
 $$ X(t=0)=  \begin{pmatrix} 1 \\\\ 1\end{pmatrix},$$
 
@@ -171,7 +164,7 @@ function g1!(du,u,p,t)
   end
   return nothing
 end
-dts = 1 .//2 .^(3:-1:0)
+dts = 1 .//2 .^(3: -1:0)
 tspan = (0.0,3.0)
 
 h2(z) = z^2 # but apply it only to u[1]
@@ -194,20 +187,21 @@ sim = test_convergence(dts,ensemble_prob,DRI1(),
   )
 ```
 
-The last line computes the weak convergence with respect to the final time point for the `DRI1()` scheme.
+The object `sim` defined in the last line contains all relevant quantities to test the weak convergence with respect to the final time point for the `DRI1()` scheme.
 Repeating this call to the `test_convergence()` function for the other aforementioned solvers, we obtain the convergence plot:
 
 
 {{< figure library="true" src="weak_conv.png" title="" lightbox="true" >}}
 
-Note that the `SimplifiedEM` and the `EM` scheme are actually lying on top of each other.
+Note that the `SimplifiedEM` and the `EM` scheme fall on top of each other.
 `DRI1()` achieves the smallest errors for a fixed `dt` in this study.
 
 ### Work-Precision Diagrams
 
-Ultimately, we are not only interested in the general convergence slope of an algorithm but rather we'd like to choose
-an algorithm based on a work-precision diagram, i.e., we select the fastest method depending on the permitted tolerance.
-Thanks to some new routines, a user can generate a work-precision diagram by the following code
+Ultimately, we are not only interested in the general convergence slope of an algorithm but also in its speed.
+We'd like to select the fastest method depending on the permitted tolerance.
+This is commonly studied using work-precision diagram.
+Thanks to [new routines](https://github.com/SciML/DiffEqDevTools.jl/pull/75), a user can generate a work-precision diagram by the following code
 
 ```julia
 reltols = 1.0 ./ 4.0 .^ (1:4)
@@ -234,10 +228,10 @@ plt = plot(wp;legend=:bottomleft)
 
 {{< figure library="true" src="WorkPrecision.png" title="" lightbox="true" >}}
 
-Therefore, `DRI1` performs the best in this non-commutative noise case if the error should stay below 1e-3.
+Therefore, `DRI1` has the best performance in this non-commutative noise case if the error is supposed to stay below 1e-3.
 For larger permitted errors, the `SimplifiedEM` scheme might be a good choice. However, the first order methods
-are outclassed soon when high precision is more of a concern.
-We plan to perform more in-depth benchmarks in the near future. Stay tuned on the [SciML news](https://sciml.ai/news/2020/08/10/StochasticBonanza/#tons_of_methods_for_high_weak_order_solving_of_sdes).
+are outclassed when high precision is more of a concern.
+We plan to perform more in-depth benchmarks in the near future what will be reported on the [SciML news](https://sciml.ai/news/2020/08/10/StochasticBonanza/#tons_of_methods_for_high_weak_order_solving_of_sdes). Stay tuned!
 
 ### Adaptive step-size control
 
@@ -245,7 +239,11 @@ Already in 2004, Rößler proposed an adaptive discretization algorithm for the
 
 To use adaptive step-size control, it is sufficient to set `adaptive=true` (default setting). Optionally, one may also pass absolute and relative tolerances.
 
-The following julia code
+The following julia code simulates the stochastic version of the Brusselator equations with intitial condition
+
+$$ X(t=0)=  \begin{pmatrix} 0.1 \\\\ 0\end{pmatrix},$$
+
+on a time span $\mathbb{I}=[0, 100]$ for adaptive (`sol`) and fixed step sizes (`sol_na`):
 
 ```julia
 using StochasticDiffEq, DiffEqNoiseProcess, Random
@@ -299,16 +297,13 @@ summ = EnsembleSummary(sol,0.0f0:0.5f0:100f0)
 pl = plot(summ,fillalpha=0.5,xlabel = "time t", yaxis="X(t)", label= ["x₁(t)" "x₂(t)"], legend=true)
 
 ```
-simulates the stochastic version of the Brusselator equations with intitial condition
 
-$$ X(t=0)=  \begin{pmatrix} 0.1 \\\\ 0\end{pmatrix},$$
-
-on a time span $\mathbb{I}=[0, 100]$ for adaptive (`sol`) and fixed step sizes (`sol_na`).
+The time evolution of both dependent variables ($x_1(t)$ and $x_2(t)$) displays damped oscillations.
 
 {{< figure library="true" src="Brusselator_many_trajectories.png" title="" lightbox="true" >}}
 
 
-We can confirm Rößler's observation in his paper[^4] that the adaptive scheme describes the time evolution of the SDE more accurately,
+We can confirm Rößler's observation[^4] that the adaptive scheme describes the time evolution of the SDE more accurately,
 as oscillations are damped out stronger for the fixed step size method, thus approaching the origin too rapidly.
 
 ```julia
@@ -386,5 +381,4 @@ If you have any questions or comments, please don’t hesitate to contact me!
 [^2]: Peter E. Kloeden, Eckhard Platen, and Ian W. Wright, Stochastic analysis and applications **10** 431-441 (1992).
 [^3]: Kristian Debrabant, Andreas Rößler, Applied Numerical Mathematics **59**, 582–594 (2009).
 [^4]: Kristian Debrabant, Andreas Rößler, Mathematics and Computers in Simulation **77**, 408-420 (2008)
-%%%[^4]: Angel Tocino and Jesus Vigo-Aguiar, SIAM Journal on Scientific Computing **24**, 507-523 (2002).
 [^5]: Andreas Rößler, PAMM: Proceedings in Applied Mathematics and Mechanics **4**, 19-22 (2004).
