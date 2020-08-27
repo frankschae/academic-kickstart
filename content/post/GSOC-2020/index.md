@@ -104,7 +104,7 @@ Open:
 
 Merged:
 
-* [Multi dimensional Brownian motion tests](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/48)
+* [Multi-dimensional Brownian motion tests](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/48)
 * [Bug fix for inplace form of NoiseGrid](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/49)
 * [Reversible NoiseWrapper](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/51)
 * [Relax the size constraints of the available noise processes](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/53)
@@ -147,16 +147,16 @@ Merged:
 
 ## Future work
 
-There is still a lot that we'd like to do, among others:
+There is still a lot that we'd like to do, e.g.,
 
 * Writing up more docs and examples
-* Implementing drift-implicit weak stochastic Runge-Kutta solver
+* Implementing drift-implicit weak stochastic Runge-Kutta solvers
 * Finishing the SDE adjoints for the Ito sense
 * Implementing a virtual Brownian tree to store the noise processes in O(1) memory
 * Setting up an OptimalControl library that allows for easy usage of the new tools within a symbolic interface
 * Benchmarking of the new solvers and adjoints
 
-Contributors, suggestions & comments are always welcome! You might like to join our slac channels #diffeq-bridged and #neuralsde to get in touch.
+Contributions, suggestions & comments are always welcome! You might like to join our slac channels #diffeq-bridged and #neuralsde to get in touch.
 
 ## Acknowledgement
 
