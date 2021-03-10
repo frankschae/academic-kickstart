@@ -1,15 +1,15 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "SciML Scientific Machine Learning Software"
-summary: "Contributions to the SciML ecosystem in Julia, especially the DiffEqSensitivity.jl package for sensitivity analysis utilities, the StochasticDiffEq.jl package for stochastic differential equations solvers, and the DiffEqNoiseProcess package for tools to develop noise processes for differential equations."
+title: "MitosisStochasticDiffEq"
+summary: "Implementation of the backward filter and the forward change of measure of the Automatic Backward Filtering Forward Guiding paradigm. Joint work with [Moritz Schauer](https://github.com/mschauer)."
 authors: []
 tags: []
 categories: []
-date: 2021-03-10T00:21:37+01:00
+date: 2021-03-10T00:20:37+01:00
 
 # Optional external URL for project (replaces project detail page).
-external_link: "https://sciml.ai/"
+external_link: "https://github.com/mschauer/MitosisStochasticDiffEq.jl"
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
