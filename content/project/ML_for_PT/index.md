@@ -2,7 +2,7 @@
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
 title: "Machine Learning for Phase Transitions"
-summary: "Data-driven methods based on characterization of changes in the underlying probability distributions with respect to drawing samples for fixed parameter values."
+summary: "Data-driven methods based on sample instances of the state of a physical system as a function of the system's parameters."
 authors: [FS in collaboration with Julian Arnold, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
 tags: [Machine learning, neural networks, unsupervised learning]
 categories: []
