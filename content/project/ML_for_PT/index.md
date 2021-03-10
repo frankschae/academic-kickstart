@@ -2,8 +2,8 @@
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
 title: "Machine Learning for Phase Transitions"
-summary: "Fully automated classification methods that yield direct physical insights into phase diagrams are of current interest. We demonstrate the identification of phase boundaries using an unsupervised machine learning method based on the vector-field divergence of the output of a predictive model, as well as using a data-driven scheme which relies on the difference between mean input features. As examples, we consider the anisotropic Ising model, the Kuramoto-Hopf model, Ising gauge theory, the toric code, and the spinless Falicov-Kimball model."
-authors: [In collaboration with Julian Arnold, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
+summary: "Data-driven methods based on characterization of changes in the underlying probability distributions with respect to drawing samples for fixed parameter values."
+authors: [FS in collaboration with Julian Arnold, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
 tags: [Machine learning, neural networks, unsupervised learning]
 categories: []
 date: 2021-03-09T23:56:43+01:00
@@ -16,7 +16,7 @@ external_link: ""
 # Focal points: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
 image:
   caption: ""
-  focal_point: ""
+  focal_point: Smart
   preview_only: false
 
 # Custom links (optional).
@@ -47,3 +47,5 @@ links:
 #   Otherwise, set `slides = ""`.
 slides: ""
 ---
+
+Fully automated classification methods that yield direct physical insights into phase diagrams are of current interest. We demonstrate the identification of phase boundaries using an unsupervised machine learning method based on the vector-field divergence of the output of a predictive model, as well as using a data-driven scheme which relies on the difference between mean input features. As examples, we consider the anisotropic Ising model, the Kuramoto-Hopf model, Ising gauge theory, the toric code, and the spinless Falicov-Kimball model.
