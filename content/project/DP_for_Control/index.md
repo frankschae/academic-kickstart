@@ -37,6 +37,8 @@ links:
   url: "https://arxiv.org/abs/2101.01190"
 - name: ODE control paper
   url: "https://iopscience.iop.org/article/10.1088/2632-2153/ab9802"
+- name: SIAM CSE 2021 talk
+  url: "https://www.youtube.com/watch?v=uDUwdAqKzYM&list=PLP8iPy9hna6TxktMt-IzdU2vQpGp3bwDn&index=4"  
 - name: CMD2020GEFES talk
   url: "https://www.youtube.com/watch?v=v8mJVGVdkNQ&list=PLWIVj90xdDE-2eeyFuiooxWcF8kw323Iv&index=3&t=0s"
 
