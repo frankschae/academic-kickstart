@@ -22,8 +22,14 @@ bio: My research interests include many-body physics, machine learning, and diff
 
 interests:
 - Scientific machine learning
+- Differentiable programming
+- Automatic differentiation
+- Neural ODEs/SDEs
+- Quantum optimal control
+- Parameter inference
+- ML for phase transitions
 - Quantum optics
-- Many-body physics of ultracold atoms
+- Many-body physics
 - Multiple scattering theory
 
 education:
@@ -74,5 +80,4 @@ user_groups:
 - Visitors
 ---
 
-I am a PhD candidate in physics within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel.
-Currently, I am participating in the Google Summer of Code 2020 program.  My project focuses on the implementation of  "High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations" in Julia. The project is carried in collaboration with my mentors Chris Rackauckas, Moritz Schauer, and Yingbo Ma.
+I am a PhD candidate in physics in the [Bruder group](https://quantumtheory-bruder.physik.unibas.ch/en/) within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel. I have participated in the Google Summer of Code 2020 program with [the project](https://summerofcode.withgoogle.com/archive/2020/projects/5076877036748800/) "High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations" within the Julia Language organization. The project was supervised by [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), and  [Yingbo Ma](https://github.com/YingboMa). Since 2020, I am a member of the [SciML](https://sciml.ai/) open source software organization for scientific machine learning.
