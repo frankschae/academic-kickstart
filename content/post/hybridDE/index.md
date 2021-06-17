@@ -5,7 +5,7 @@ title: "Neural Hybrid Differential Equations"
 subtitle: "GSoC 2021 -- first blog post"
 summary: ""
 authors: []
-tags: [GSoC 2021, Hybrid differential equations, Adjoint sensitivity methods, Event handling]
+tags: [GSoC 2021, julia, Hybrid differential equations, Adjoint sensitivity methods, Event handling]
 categories: []
 date: 2021-06-16T14:50:17+02:00
 lastmod: 2021-06-16T14:50:17+02:00
@@ -27,7 +27,7 @@ image:
 #   Otherwise, set `projects = []`.
 projects: []
 ---
-I am delighted that I have been awarded my second GSoC stipend this year.  I look forward to carrying out the ambitious project scope with my mentors [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer),  [Yingbo Ma](https://github.com/YingboMa), and [Mohamed Tarek](https://github.com/mohamed82008). This year's project is embedded within the [NumFocus](https://summerofcode.withgoogle.com/organizations/5765643267211264/)/[SciML](https://sciml.ai) organization and comprises adjoint sensitivity methods for events, shadowing methods for chaotic dynamics, symbolically generated adjoint methods, and further AD tooling within the Julia Language.
+I am delighted that I have been awarded my second GSoC stipend this year.  I look forward to carrying out the ambitious project scope with my mentors [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer),  [Yingbo Ma](https://github.com/YingboMa), and [Mohamed Tarek](https://github.com/mohamed82008). This year's project is embedded within the [NumFocus](https://summerofcode.withgoogle.com/organizations/5765643267211264/)/[SciML](https://sciml.ai) organization and comprises adjoint sensitivity methods for discontinuities, shadowing methods for chaotic dynamics, symbolically generated adjoint methods, and further AD tooling within the Julia Language.
 
 This first post aims to illustrate our new (adjoint) sensitivity analysis tools with respect to event handling in (ordinary) differential equations (DEs).
 
@@ -37,11 +37,11 @@ DEs with additional explicit or implicit discontinuities are called hybrid DEs. 
 
 Some relevant examples for hybrid DEs with discrete or continuous callbacks are:  
 
-- quantum optics experiments, where photon-counting measurements lead to jumps in the quantum state that occur with a variable rate (`ContinuousCallback`), see for instance Appendix A in Ref.[^1].
+- quantum optics experiments, where photon-counting measurements lead to jumps in the quantum state that occur with a variable rate, see for instance Appendix A in Ref.[^1] (`ContinuousCallback`).
 - a bouncing ball[^2] (`ContinuousCallback`).
 - classical point process models, such as a Poisson process[^3].
 - digital controllers[^4], where a continuous system dynamics is controlled by a discrete-time controller (`DiscreteCallback`).
-- pharmacokinetic models[^5], where explicit dosing times change the drug concentration in the blood (`DiscreteCallback`). The simplest possible example being the one-compartment PK model.
+- pharmacokinetic models[^5], where explicit dosing times change the drug concentration in the blood (`DiscreteCallback`). The simplest possible example being the one-compartment model.
 - kicked oscillator dynamics, e.g., a harmonic oscillator that gets a kick at some time points (`DiscreteCallback`).
 
 The associated sensitivity methods that allow us to differentiate through the respective hybrid DE systems have been recently introduced in Refs. [^2] and [^3].
@@ -63,8 +63,7 @@ $$
 \end{aligned}   
 $$
 
-This second order DE can be [reduced](https://en.wikipedia.org/wiki/Ordinary_differential_equation#Reduction_of_order) to two first order DEs, such that we can straightforwardly simulate the resulting ODE with the `DifferentialEquations.jl` package. (Instead of doing this reduction manually, we could also use [`ModelingToolkit.jl`](https://mtk.sciml.ai/stable/tutorials/higher_order/) to transform automatically the DE. Alternatively, for second order ODEs, there is also
-a `SecondOrderODEProblem` implemented.) The Julia code reads:
+This second-order ODE can be [reduced](https://en.wikipedia.org/wiki/Ordinary_differential_equation#Reduction_of_order) to two first-order ODEs, such that we can straightforwardly simulate the resulting ODE with the `DifferentialEquations.jl` package. (Instead of doing this reduction manually, we could also use [`ModelingToolkit.jl`](https://mtk.sciml.ai/stable/tutorials/higher_order/) to transform the ODE in an automatic manner. Alternatively, for second-order ODEs, there is also a `SecondOrderODEProblem` implemented.) The Julia code reads:
 
 ```julia
 using DiffEqFlux, DifferentialEquations, Flux, Optim, Plots, DiffEqSensitivity
@@ -83,6 +82,8 @@ function oscillator!(du,u,p,t)
   return nothing
 end
 
+prob_data = ODEProblem(oscillator!,u0,tspan)
+
 # ODE without kicks
 pl = plot(solve(prob_data,Tsit5(),saveat=t), label=["x(t)" "v(t)"])
 ```
@@ -98,7 +99,6 @@ function kick!(integrator)
 end
 cb_ = PresetTimeCallback(kicktimes,kick!,save_positions=(false,false))
 
-prob_data = ODEProblem(oscillator!,u0,tspan)
 sol_data = solve(prob_data,Tsit5(),callback=cb_,saveat=t)
 t_data = sol_data.t
 ode_data = Array(sol_data)
@@ -112,11 +112,11 @@ plot!(pl2,t_data[1:20],ode_data[2,1:20],label="data v(t)")
 pl = plot(pl2, pl1, layout=(1,2), xlabel="t")
 ```
 {{< figure library="true" src="forward_damped_oscillator.png" title="" lightbox="true" >}}
-The left-hand side shows a zoom for short times to resolve the kicks better. Note that by setting `save_positions=(true,true)`, the kicks would be saved before **and** after the event such that the kicks would appear completely vertically in the plot. The data on the right-hand will be used as training data below. In the spirit of universal differential equations[^6], we now aim at learning (potentially) missing parts of the model from these data traces.
+The left-hand side shows a zoom for short times to better resolve the kicks. Note that by setting `save_positions=(true,true)`, the kicks would be saved before **and** after the event such that the kicks would appear completely vertically in the plot. The data on the right-hand will be used as training data below. In the spirit of universal differential equations[^6], we now aim at learning (potentially) missing parts of the model from these data traces.
 
 ### High domain knowledge
 
-For simplicity, we assume that we have almost perfect knowledge about our system. That is, we assume to know the basic structure of the ODE, including its parameters $a$ and $b$, and that the `affect!` function of the event only acts on the velocity. We then encode the affect as an additional component to the ODE. The task is thus to learn the dynamics of the third component of `integrator.u`. If we further set the inital value of that component to `1`, then the neural network only has to learn that `du[3]` is `0`. In other words, the output of the neural network must be `0` for all states `u`.
+For simplicity, we assume that we have almost perfect knowledge about our system. That is, we assume to know the basic structure of the ODE, including its parameters $a$ and $b$, and that the `affect!` function of the event only acts on the velocity. We then encode the affect as an additional component to the ODE. The task is thus to learn the dynamics of the third component of `integrator.u`. If we further set the initial value of that component to `1`, then the neural network only has to learn that `du[3]` is `0`. In other words, the output of the neural network must be `0` for all states `u`.
 
 ```julia
 Random.seed!(123)
@@ -172,7 +172,7 @@ end
 loss(p_nn1)
 ```
 
-The recently implemented tools are deeply hidden within the [DiffEqSensitivity.jl](https://github.com/SciML/DiffEqSensitivity.jl) package. However, while the user could only choose discrete sensitivies such as `ReverseDiffAdjoint()` or  `ForwardDiffAdjoint()` that rely on direct differentiation through the solver operations to get accurate gradients, one can now also select continuous adjoint sensitivy methods such as `BacksolveAdjoint()`,  `InterpolatingAdjoint()`, and `QuadratureAdjoint()` as the `sensealg` for hybrid DEs. Each choice has its own characteristics in terms of stability, scaling with parameters, and memory consumption, see, e.g., [Chris' talk](https://www.youtube.com/watch?v=XRJ-rtP2fVE&list=PLP8iPy9hna6TxktMt-IzdU2vQpGp3bwDn&index=1) at the SciML symposiam at SIAM CSE.
+The recently implemented tools are deeply hidden within the [DiffEqSensitivity.jl](https://github.com/SciML/DiffEqSensitivity.jl) package. However, while the user could previously only choose discrete sensitivities such as `ReverseDiffAdjoint()` or  `ForwardDiffAdjoint()` that rely on direct differentiation through the solver operations to get accurate gradients, one can now also select continuous adjoint sensitivity methods such as `BacksolveAdjoint()`,  `InterpolatingAdjoint()`, and `QuadratureAdjoint()` as the `sensealg` for hybrid DEs. Each choice has its own characteristics in terms of stability, scaling with parameters, and memory consumption, see, e.g., [Chris' talk](https://www.youtube.com/watch?v=XRJ-rtP2fVE&list=PLP8iPy9hna6TxktMt-IzdU2vQpGp3bwDn&index=1) at the SciML symposium at SIAM CSE.
 
 ```julia
 ###################################
@@ -215,8 +215,10 @@ pl = plot(pl2,pl3)
 
 {{< figure library="true" src="trained1.png" title="" lightbox="true" >}}
 
+We see the expected constant value of `u[3]`, indicating a kick to the velocity of `+=1`, at the kicking times over the full time interval.
+
 ## Reducing the domain knowledge
-The less physical information is included in the model design, the more difficult the training becomes, e.g., due to [local minima](https://diffeqflux.sciml.ai/dev/examples/local_minima/). Possible modification for the kicked oscillator could be
+If less physical information is included in the model design, the training becomes more difficult, e.g., due to [local minima](https://diffeqflux.sciml.ai/dev/examples/local_minima/). Possible modification for the kicked oscillator could be
 
 * changing the initial condition of the third component of `u`,
 * using another affect function `affect!(integrator) = integrator.u[2] = integrator.u[3]`,
@@ -230,7 +232,7 @@ function f2!(du,u,p,t)
   return nothing
 end
 ```
-* fit the parameters additionally:
+* fitting the parameters $a$ and $b$ simultaneously:
 ```julia
 function f3!(du,u,p,t)
   a = p[end-1]
@@ -243,7 +245,7 @@ function f3!(du,u,p,t)
   return nothing
 end
 ```
-* infer the underlying dynamics using a neural network with `4` outputs:
+* inferring the entire underlying dynamics using a neural network with `4` outputs:
 ```julia
 function f4!(du,u,p,t)
   Ω = nn3(u[1:2], p)
@@ -264,7 +266,7 @@ With respect to the adjoint sensitivity methods for hybrid DEs, we are planning 
 * refine the adjoints in case of implicit discontinuities (`ContinuousCallbacks`) and
 * support direct usage through the [jump problem](https://diffeq.sciml.ai/stable/types/jump_types/) interface
 
-in the upcoming weeks. For further information, the interested reader might take a look at the open [issues](https://github.com/SciML/DiffEqSensitivity.jl/issues) in the DiffEqSensitivity.jl package.
+in the upcoming weeks. For further information, the interested reader is encouraged to look at the open [issues](https://github.com/SciML/DiffEqSensitivity.jl/issues) in the DiffEqSensitivity.jl package.
 
 If you have any questions or comments, please don’t hesitate to contact me!
 
