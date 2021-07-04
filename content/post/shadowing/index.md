@@ -132,7 +132,7 @@ function Lorenz_solve(p)
 end
 
 Niter = 10
-ps = collect(20.0:1.0:40.0)
+ps = collect(0.0:1.0:50.0)
 probs = []
 sols = []
 zmean = []
@@ -151,7 +151,7 @@ for ρ in ps
   push!(zstd,std(ztmp))
 end
 
-pl3 = plot(ps,zmean, ribbon = zstd, ylabel=L"\langle z\rangle", xlabel=L"\rho", legend=false, labelfontsize=20, lw = 2)
+pl3 = plot(ps,zmean, ribbon = zstd, ylabel=L"\langle z\rangle", xlabel=L"\rho", legend=false, labelfontsize=20, lw = 2, xlims=(0,50),ylims=(0,50))
 savefig(pl3, "zvsrho.png")
 
 pl4 = plot(pl2,pl3, margin=3Plots.mm, layout = (1, 2), size=(600,300))
@@ -200,7 +200,7 @@ $$
 $$
 
 
-Similarly, using [uncertainty quantification](https://diffeq.sciml.ai/stable/analysis/uncertainty_quantification/#Example-3:-Adaptive-ProbInts-on-the-Lorenz-Attractor) one realizes that due to finite numerical precision and the associated unavoidable errors that are amplified exponentially, one cannot follow the true solution of a chaotic system for long times. We can visualize this by twice solving the Lorenz system with exactly the same parameters and initial condition but with different floating point number precision. In the following animation, we see that after a few Lyapunov lengths, we see a $O(1)$ difference between both trajectories:
+Similarly, using [uncertainty quantification](https://diffeq.sciml.ai/stable/analysis/uncertainty_quantification/#Example-3:-Adaptive-ProbInts-on-the-Lorenz-Attractor) one realizes that due to finite numerical precision and the associated unavoidable errors that are amplified exponentially, one cannot follow the true solution of a chaotic system for long times. We can visualize this by solving the Lorenz system twice with exactly the same parameters and initial condition but with different floating point number precision. In the following animation, we see an $O(1)$ difference between both trajectories after a few Lyapunov lengths:
 
 ```julia
 prob_attractor1 = ODEProblem(lorenz!,sol_init[end],(0.0, 50.0),p)
