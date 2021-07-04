@@ -5,7 +5,7 @@ title: "Shadowing Methods for Forward and Adjoint Sensitivity Analysis of Chaoti
 subtitle: "GSoC 2021 -- second blog post"
 summary: ""
 authors: []
-tags: [GSoC 2021, Adjoint sensitivity methods, Forward sensitivity methods, Shadowing, Chaotic systems]
+tags: [GSoC 2021, julia, Adjoint sensitivity methods, Forward sensitivity methods, Shadowing, Chaotic systems]
 categories: []
 date: 2021-07-02T11:08:22+02:00
 lastmod: 2021-07-02T11:08:22+02:00
