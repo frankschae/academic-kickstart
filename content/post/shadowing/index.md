@@ -28,9 +28,9 @@ image:
 projects: []
 ---
 
-In this post, we dig into sensitivity analysis of chaotic systems. Chaotic systems are dynamical, deterministic systems that are extremely sensitive to small changes in the initial state or the system parameters. Specifically, the dependence of a chaotic system on its initial conditions is well known as the "butterfly effect". Chaotic models are used in various fields ranging from simple examples such as the double pendulum to highly complicated fluid or climate models.
+In this post, we dig into sensitivity analysis of chaotic systems. Chaotic systems are dynamical, deterministic systems that are extremely sensitive to small changes in the initial state or the system parameters. Specifically, the dependence of a chaotic system on its initial conditions is well known as the "butterfly effect". Chaotic models are encountered in various fields ranging from simple examples such as the double pendulum to highly complicated fluid or climate models.
 
-Sensitivity analysis methods have proven to be very powerful for solving inverse problems such as parameter estimation or optimal control[^1] [^2] [^3]. However, conventional sensitivity analysis methods may fail in chaotic systems due to the ill-conditioning of the initial value problem. Sophisticated methods, such as least squares shadowing[^4] (LSS) or non-intrusive least squares shadowing[^5] (NILSS),  that essentially transform the initial value problem to a well conditioned optimization problem -- the least squares shadowing problem -- have been developed in the last decade. In this second part of my GSoC project, I implemented these methods within the [DiffEqSensitivity.jl](https://github.com/SciML/DiffEqSensitivity.jl) package.
+Sensitivity analysis methods have proven to be very powerful for solving inverse problems such as parameter estimation or optimal control[^1] [^2] [^3]. However, conventional sensitivity analysis methods may fail in chaotic systems due to the ill-conditioning of the initial value problem. Sophisticated methods, such as least squares shadowing[^4] (LSS) or non-intrusive least squares shadowing[^5] (NILSS) have been developed in the last decade. Essentially, these methods transform the initial value problem to a well conditioned optimization problem -- the least squares shadowing problem. In this second part of my GSoC project, I implemented the LSS and the NILSS method within the [DiffEqSensitivity.jl](https://github.com/SciML/DiffEqSensitivity.jl) package.
 
 The objective for LSS and NILSS is a long-time average quantity. More precisely, we define the instantaneous objective by $g(u,p)$, where $u$ is the state and $p$ is the parameter of the differential equation. Then, the objective is obtained by averaging $g$ over an infinitely long trajectory:
 
@@ -44,7 +44,7 @@ $$
 Under the assumption of ergodicity, $\langle g \rangle_∞$ only depends on $p$.
 
 ## The Lorenz system   
-One of the most important chaotic models is the Lorenz system which is a simplified model for atmospheric convection. The Lorenz system has three states $x$, $y$, and $z$, as well as three parameters $\rho$, $\sigma$, and $\beta$. Its time evolution is then described by the ODE:
+One of the most important chaotic models is the Lorenz system which is a simplified model for atmospheric convection. The Lorenz system has three states $x$, $y$, and $z$, as well as three parameters $\rho$, $\sigma$, and $\beta$. Its time evolution is given by the ODE:
 
 $$
  \begin{pmatrix}
@@ -99,7 +99,7 @@ savefig(pl1, "Lorenz_forward.png")
 
 {{< figure library="true" src="Lorenz_forward.png" title="" lightbox="true" >}}
 
-Here, we plot the initial evolution in blue and the evolution on the attractor in orange.
+Here, we separated the trajectory in two parts: We plot the initial transient dynamics starting from random initial conditions towards the attractor in blue and the subsequent time evolution lying entirely on the attractor in orange.
 
 Following Refs.[^4] and [^5], we choose
 
@@ -107,7 +107,7 @@ $$
 \langle z \rangle_∞ = \lim_{T \rightarrow ∞} \frac{1}{T} \int_0^T z \text{d}t
 $$
 
-as the objective, where we only use the trajectory that lies completely on the attractor (i.e., the blue trajectory in the plot on top). Let us first study the objective as a function of $\rho$.
+as the objective, where we only use the trajectory that lies completely on the attractor (i.e., the orange trajectory in the plot on top). Let us first study the objective as a function of $\rho$.
 
 ```julia
 function compute_objective(sol)
@@ -193,14 +193,14 @@ $$
 \end{aligned}
 $$
 
-As pointed out in the NILSS paper, this is because the process of $T\rightarrow ∞$ for a fixed initial state does *not* commute with the differentiation:
+As pointed out in the NILSS paper, this is because the limit of $T\rightarrow ∞$ for a fixed initial state does *not* commute with the differentiation:
 
 $$
 \frac{\text{d}}{\text{d} \rho} \langle z \rangle_∞ \neq \lim_{T \rightarrow ∞} \frac{\partial}{\partial \rho} \langle z \rangle_T
 $$
 
 
-Similarly, using [uncertainty quantification](https://diffeq.sciml.ai/stable/analysis/uncertainty_quantification/#Example-3:-Adaptive-ProbInts-on-the-Lorenz-Attractor) one realizes that due to finite numerical precision and the associated unavoidable errors that are amplified exponentially, one cannot follow the true solution of a chaotic system for long times. We can visualize this by twice solving the Lorenz system with exactly the same parameters and initial condition but with different floating point number precision:
+Similarly, using [uncertainty quantification](https://diffeq.sciml.ai/stable/analysis/uncertainty_quantification/#Example-3:-Adaptive-ProbInts-on-the-Lorenz-Attractor) one realizes that due to finite numerical precision and the associated unavoidable errors that are amplified exponentially, one cannot follow the true solution of a chaotic system for long times. We can visualize this by twice solving the Lorenz system with exactly the same parameters and initial condition but with different floating point number precision. In the following animation, we see that after a few Lyapunov lengths, we see a $O(1)$ difference between both trajectories:
 
 ```julia
 prob_attractor1 = ODEProblem(lorenz!,sol_init[end],(0.0, 50.0),p)
@@ -236,7 +236,7 @@ savefig(pl1, "Lorenz_Floats.png")
 
 {{< figure library="true" src="Lorenz.gif" title="" lightbox="true" >}}
 
-
+Without animation:
 
 {{< figure library="true" src="Lorenz_Floats.png" title="" lightbox="true" >}}
 
@@ -248,7 +248,7 @@ Luckily, the [shadowing lemma](https://mathworld.wolfram.com/ShadowingTheorem.ht
 
 ## Shadowing methods
 
-The central idea of the shadowing methods is to distill the long-time effect (which actually shifts the attractor) due to a variation of the system parameters from the transient effect, i.e., the butterfly effect, that looks like exponentially diverging trajectories due to variations of the initial conditions. That implies that we aim at finding two trajectories, one with $p$ and one with $p+\delta p$, which do *not* diverge exponentially from each other (which exist thanks to the shadowing lemma). In this case, their difference will only contain the long-time effect. More details can be found in Refs. [^4] and [^5].
+The central idea of the shadowing methods is to distill the long-time effect (which actually shifts the attractor) due to a variation of the system parameters (upwards in the $z$-direction with increasing $\rho$ for the Lorenz system) from the transient effect, i.e., the butterfly effect that looks like exponentially diverging trajectories due to variations of the initial conditions.  That implies that we aim at finding two trajectories, one with $p$ and one with $p+\delta p$, which do *not* diverge exponentially from each other (which exist thanks to the shadowing lemma). In this case, their difference will only contain the long-time effect. More details can be found in Refs. [^4] and [^5], including a visualization of both effects in Fig. 1 of Ref. [^5].
 
 ## LSS and NILSS for the Lorenz system
 
