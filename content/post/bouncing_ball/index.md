@@ -4,7 +4,7 @@
 title: "[WIP] Sensitivity Analysis of Hybrid Differential Equations"
 subtitle: "GSoC 2021 -- third blog post"
 summary: ""
-authors: []
+authors: [Frank Schäfer and Moritz Schauer]
 tags: [GSoC 2021, Hybrid differential equations, Adjoint sensitivity methods, Event handling]
 categories: []
 date: 2021-07-16T13:24:04+02:00
@@ -57,7 +57,7 @@ v(t) &= v_0 - g  t
 \end{aligned}  
 $$
 
-or numerically
+or numerically using the OrdinaryDiffEq package from the [SciML](https://sciml.ai/) ecosystem.
 
 ```julia
 using ForwardDiff, Zygote, OrdinaryDiffEq, DiffEqSensitivity
@@ -194,7 +194,7 @@ z_{\rm imp}(t) = \begin{cases}
 \end{cases}
 $$
 
-Numerically, we use a `ContinuousCallback` in this case
+Numerically, we use a `ContinuousCallback` in this case.
 
 ```julia
 # ContinuousCallback (implicit event)
@@ -203,7 +203,7 @@ cb2 = ContinuousCallback(condition2,affect!,save_positions=(true,true))
 sol2 = solve(prob,Tsit5(),callback=cb2,saveat=0.1)
 ```
 
-We can verify that both callbacks lead to the same forward time evolution (for fixed initial conditions and parameters)
+We can verify that both callbacks lead to the same forward time evolution (for fixed initial conditions and parameters).
 ```julia
 # plot forward trajectory
 pl1 = plot(sol1, label = ["z(t)" "v(t)"], title="explicit event", labelfontsize=20, legendfontsize=20, lw = 2, xlabel = "t", legend=:bottomright)
@@ -243,11 +243,11 @@ anim = animate(list_plots,every=1)
 ```
 {{< figure library="true" src="BB.gif" title="" lightbox="true" >}}
 
-The original curve is shown in black in the figure above. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions that is implicitly defined by the event condition. Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}t^\star}{\text{d}p}$ or initial conditions $\frac{\text{d}t^\star}{\text{d}z_0}$, $\frac{\text{d}t^\star}{\text{d}v_0}$ must be taken into account.
+The original curve is shown in black in the figure above. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition. Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}t^\star}{\text{d}p}$ or initial conditions $\frac{\text{d}t^\star}{\text{d}z_0}$, $\frac{\text{d}t^\star}{\text{d}v_0}$ must be taken into account.
 
 ## Sensitivity analysis with events
 
-We are often interested in computing the change of a loss function with respect to changes of the parameters or initial condition. For this purpose, let us consider the mean square error loss function
+We are often interested in computing the change of a loss function with respect to changes of the parameters or initial condition. For this purpose, let us first consider the mean square error loss function
 
 $$
 L(z,y) = \sum_i(z(t_i) - y_i)^2
@@ -259,7 +259,7 @@ $$
 \frac{\text{d}L}{\text{d} \alpha} =  2\sum_i (z(t_i) - y_i) \frac{\text{d}z(t_i)}{\text{d} \alpha}.
 $$
 
-For the bouncing ball, we can easily compute those sensitivities by inserting the appropriate limit of $z_{\rm imp}(t_i)$ and $z_{\rm exp}(t_i)$. One can verify that the sensitivities are different in the two cases, as expected.
+For the bouncing ball, we can easily compute those sensitivities by inserting our results for $z_{\rm imp}(t_i)$ and $z_{\rm exp}(t_i)$. One can verify that the sensitivities are different in the two cases, as expected.
 
 
 However, in most systems, we won't be able to solve analytically a differential equation
@@ -268,7 +268,15 @@ $$
 \text{d}x(t) = f(x,p,t) \text{d}t
 $$
 
-with initial condition $x_0=x(t_0)$. Instead, we have to numerically solve for the state `x(t)`. Regarding the computation of the sensitivities, we may then choose one of the [available algorithms](https://diffeq.sciml.ai/stable/analysis/sensitivity/) for our differential equation. Currently, `BacksolveAdjoint()`, `InterpolatingAdjoint()`, `QuadratureAdjoint()`, `ReverseDiffAdjoint()`, `TrackerAdjoint()`, and `ForwardDiffAdjoint()` are compatible with events. Let us focus in the following on the `BacksolveAdjoint()` algorithm which computes the sensitivities
+with initial condition $x_0=x(t_0)$. Instead, we have to numerically solve for the state `x(t)`. Regarding the computation of the sensitivities, we may then choose one of the [available algorithms](https://diffeq.sciml.ai/stable/analysis/sensitivity/) for the given differential equation. Currently, `BacksolveAdjoint()`, `InterpolatingAdjoint()`, `QuadratureAdjoint()`, `ReverseDiffAdjoint()`, `TrackerAdjoint()`, and `ForwardDiffAdjoint()` are compatible events in ordinary differential equations. We write the loss function in the following as a function of time, state, and parameters
+
+$$
+\begin{aligned}
+L = L(t,x,p).
+\end{aligned}
+$$
+
+In the following, let us focus on the `BacksolveAdjoint()` algorithm, which computes the sensitivities
 
 $$
 \begin{aligned}
@@ -277,11 +285,11 @@ $$
 \end{aligned}
 $$
 
-by solving an ODE for $\lambda(t)$ in reverse time from $t_N$ to $t_0$
+with respect to the initial state and the parameters, by solving an ODE for $\lambda(t)$ in reverse time from $t_N$ to $t_0$
 
 $$
 \begin{aligned}
-\frac{\text{d}\lambda(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(\rightarrow x(t), p, t)}{\text{d} x(t)} - \frac{\text{d} L(\rightarrow x(t), y)}{\text{d} x(t)}^\dagger \delta(t-t_i), \\\\
+\frac{\text{d}\lambda(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(\rightarrow x(t), p, t)}{\text{d} x(t)} - \frac{\text{d} L(t, \rightarrow x(t), p)}{\text{d} x(t)}^\dagger \delta(t-t_i), \\\\
 \frac{\text{d}\lambda_{p}(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(x(t), \rightarrow p, t)}{\text{d} p},
 \end{aligned}
 $$
@@ -295,7 +303,7 @@ $$
 \end{aligned}
 $$
 
-The arrows indicate the variable with respect to which we differentiate. Note that computing the vector-Jacobian products (vjp) in the adjoint ODE requires the value of $x(t)$ along its trajectory. In `BacksolveAdjoint()` we recompute $x(t)$--together with the adjoint variables--backwards in time starting with its final value $x(t_N)$.
+The arrows indicate the variable with respect to which we differentiate. Note that computing the vector-Jacobian products (vjp) in the adjoint ODE requires the value of $x(t)$ along its trajectory. In `BacksolveAdjoint()`, we recompute $x(t)$--together with the adjoint variables--backwards in time starting with its final value $x(t_N)$. A derivation of the ODE adjoint is given in [Chris' MIT 18.337 lecture notes](https://mitmath.github.io/18337/lecture11/adjoints).
 
 ### Explicit events
 
@@ -314,40 +322,72 @@ In particular, we apply a loss function callback before and after this update if
 
 ### Implicit events
 
-Define $u(t) = (t, x(t))$. Let us first consider the event times. We are interested in
+#### special case: event as termination condition
+
+Define $u(t) = (t, x(t))$. Let us first re-derive the case, where the implicit event terminates the ODE and where we have a loss function acting on $t^\star_1$, $x(t^\star_1)$, and $p$, as considered by Ricky T. Q. Chen, Brandon Amos, and Maximilian Nickel in their ICLR 2021 paper[^4]. We are interested in
 
 $$
-\frac{\text{d}L(u(t^\star_j(\rightarrow p), \rightarrow p))}{\text{d}p} = \frac{\text{d}L(t^\star_j(p), \text{solve}(t^\star_j(p), x0, \rightarrow p))}{\text{d}p}
+\frac{\text{d}L(u(t^\star_1(\rightarrow p), \rightarrow p), \rightarrow p)}{\text{d}p} = \frac{\text{d}L(t^\star_1({\color{black}\rightarrow} p), \text{solve}(t_0, x_0, t^\star_1({\color{black}\rightarrow}p), \rightarrow p),\rightarrow p)}{\text{d}p},
 $$
 
-In a first step, we need to compute $t^\star_j(p)$ based on the event condition $F(t, p) = g(u(t, p)) = 0$.  We can apply the [implicit function theorem](https://www.uni-siegen.de/fb6/analysis/overhagen/vorlesungsbeschreibungen/skripte/analysis3_1.pdf) which yields:
+which indicates that changing $p$ changes both $t^\star_1$ as well as $x^\star_1$ in $t^\star_1$.
+
+In a first step, we need to compute $t^\star_1(p)$ based on the event condition $F(t, p) = g(u(t, p)) = 0$.  We can apply the [implicit function theorem](https://www.uni-siegen.de/fb6/analysis/overhagen/vorlesungsbeschreibungen/skripte/analysis3_1.pdf) which yields:
 
 $$
 \begin{aligned}
-\frac{\text{d}t^\star_j(p)}{\text{d}p} &= - \left(\frac{\text{d}g(\rightarrow t^\star_j, \text{solve}(\rightarrow t^\star_j,x_0, p))}{\text{d}t^\star_j}\right)^{-1} \frac{\text{d}g(t^\star_j, \text{solve}(t^\star_j, x_0, \rightarrow p))}{\text{d}p} \\\\
+\frac{\text{d}t^\star_1(p)}{\text{d}p} &= - \left(\frac{\text{d}g(\rightarrow t^\star_1, \text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d}t^\star_1}\right)^{-1} \frac{\text{d}g(t^\star_1, \text{solve}(t_0, x_0, t^\star_1, \rightarrow p))}{\text{d}p} \\\\
 \end{aligned}
 $$
 
 The total derivative inside the bracket is defined as:
 $$
 \begin{aligned}
-\frac{\text{d}g(\rightarrow t^\star_j, \text{solve}(\rightarrow t^\star_j, x_0, p))}{\text{d}t^\star_j} &= \frac{\text{d}g(\rightarrow t^\star_j, \text{solve}(t^\star_j, x_0, p))}{\text{d}t^\star_j} + \frac{\text{d}g(t^\star_j, \text{solve}(\rightarrow t^\star_j, x_0, p))}{\text{d}t^\star_j}\\\\
+\frac{\text{d}g(\rightarrow t^\star_1, \text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d}t^\star_1} &= \frac{\text{d}g(\rightarrow t^\star_1, \text{solve}(t_0, x_0, t^\star_1, p))}{\text{d}t^\star_1} + \frac{\text{d}g(t^\star_1, \text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d}t^\star_1}\\\\
 \end{aligned}
 $$
 
 Since
 
 $$
-\frac{\text{d}(\text{solve}(\rightarrow t^\star_j, x_0, p))}{\text{d}t^\star_j} = f(t^\star_j,p)
+\frac{\text{d}(\text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d}t^\star_1} = f(x^\star, p, t^\star_1)
 $$
 
 by definition of the ODE, we can further write
 
 $$
 \begin{aligned}
-\frac{\text{d}g(t^\star_j, \text{solve}(\rightarrow t^\star_j, x_0, p))}{\text{d}t^\star_j} = \dots \\\\
+\frac{\text{d}g(t^\star_1, \text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d}t^\star_1} = \frac{\text{d}g(t^\star_1, \text{solve}(t_0, x_0, \rightarrow t^\star_1, p))}{\text{d} u^\star(t^\star_1)}  f(x^\star, p, t^\star_1).
 \end{aligned}
 $$
+
+Thus, we find that
+
+$$
+{\color{red} \text{write here how BacksolveAdjoint needs to be modified}}
+$$
+
+and if we allow the loss function to depend on other times or states:
+
+$$
+\color{red} \\dots
+$$
+
+#### generalization: several events
+
+As pointed out by Chen et al. as well as by Timo C. Wunderlich and Christian Pehle[^3], one can chain together the events and differentiate through the entire time evolution. That is, we are generally allowed to segment the time evolution over an interval $[t_0, t]$ into one from $[t_0, s]$ and a subsequent one from $[s, t]$:
+
+$$
+\text{solve}(t_0, x_0, t, p)  = \text{solve}(s, \text{solve}(t_0, x_0, s, p), t-s, p),
+$$
+
+such that also loss function contributions are chained:
+
+$$
+\color{red} \text{write general BacksolveAdjoint equations...}
+$$
+
+
 
 ## Outlook
 
