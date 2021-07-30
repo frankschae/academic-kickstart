@@ -399,7 +399,7 @@ If you have any questions or comments, please don’t hesitate to contact me!
 [^2]: Junteng Jia, Austin R. Benson, arXiv preprint arXiv:1905.10403 (2019).
 [^3]: Timo C. Wunderlich and Christian Pehle, Sci. Rep. *11*, 12829 (2021).
 [^4]: Ricky T. Q. Chen, Brandon Amos, Maximilian Nickel, arXiv preprint arXiv:2011.03902 (2020).
-[^5]: For a function $f$ of more than one variable $y = f(t, x_1(t),x_2(t),\dots,x_N(t))$, the [total derivative](https://en.wikipedia.org/wiki/Differential_of_a_function#Differentials_in_several_variables) with respect to the independent variable $t$ is given by the sum of all partial differentials
+[^5]: For a function $f$ of more than one variable $y = f(t, x_1(t),x_2(t),\dots,x_N(t))$, the [total derivative](https://en.wikipedia.org/wiki/Differential_of_a_function#Differentials_in_several_variables) with respect to the independent variable $t$ is given by the sum of all partial derivatives
 $$
 \begin{aligned}
 \frac{\text{d}y}{\text{d}t} &= \frac{\text{d}f(\rightarrow t, x_1(\rightarrow t),x_2(\rightarrow t),\dots,x_N(\rightarrow t))}{\text{d}t} \\\\
