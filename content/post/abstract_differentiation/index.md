@@ -5,7 +5,7 @@ title: "AbstractDifferentiation.jl for AD-backend agnostic code "
 subtitle: ""
 summary: ""
 authors: []
-tags: [GSoC 2021, Automatic Differentiation, AbstractDifferentiation.jl]
+tags: [GSoC 2021, julia, Automatic Differentiation, AbstractDifferentiation.jl]
 categories: []
 date: 2021-08-01T12:03:17+02:00
 lastmod: 2021-08-01T12:03:17+02:00
@@ -196,7 +196,7 @@ x = [0.9999999999999989, 0.9999999999999999]
 x = [1.0, 1.0]
 ```
 
-If computing the Jacobian by hand is too cumbersome (or not possible for other reasons), we can compute it using finite differences. Within the AbstractDifferentiation API, we can directly define, for instance, the Jacobian of [FiniteDifferences](https://github.com/JuliaDiff/FiniteDifferences.jl) as a new primitive operation.
+If computing the Jacobian by hand is too cumbersome (or not possible for other reasons), we can compute it using finite differences. Within the AbstractDifferentiation API, we can directly define, for instance, the Jacobian of [FiniteDifferences.jl](https://github.com/JuliaDiff/FiniteDifferences.jl) as a new primitive operation.
 
 ```julia
 ## FiniteDifferences
@@ -237,7 +237,7 @@ xs = [x₀]
 GaussNewton!(xs, x₀, p, backend=fdm_backend)
 ```
 
-If we wanted to use reverse-mode AD instead, for example via [Zygote.jl](https://github.com/FluxML/Zygote.jl), a natural choice for the primitive is to define the pullback function. AbstractDifferentiation then generates the associated code to compute the Jacobian for us.
+If we want to use reverse-mode AD instead, for example via [Zygote.jl](https://github.com/FluxML/Zygote.jl), a natural choice for the primitive is to define the pullback function. AbstractDifferentiation then generates the associated code to compute the Jacobian for us.
 
 ```julia
 ## Zygote
@@ -291,7 +291,7 @@ xs = [x₀]
 GaussNewton!(xs, x₀, p, backend=forwarddiff_backend)
 ```
 
-where we used that the Jacobian-vector product $f'(x)v$, i.e., the primitives of forward-mode AD, can be computed by [differentiating $f(x + hv)$ with respect to $h$ at 0](https://discourse.julialang.org/t/help-with-jacobian-vector-product-to-get-natural-gradient/51115/12).
+where we have used that the Jacobian-vector product $f'(x)v$, i.e., the primitives of forward-mode AD, can be computed by [differentiating $f(x + hv)$ with respect to $h$ at 0](https://discourse.julialang.org/t/help-with-jacobian-vector-product-to-get-natural-gradient/51115/12).
 
 Many AD packages, such as Zygote, have troubles with mutating functions. [Enzyme.jl](https://github.com/wsmoses/Enzyme.jl) is one of the exceptions. Additionally, it is very fast and has further improved the performance of the [adjoints implemented within the DiffEqSensitivity package](https://github.com/SciML/DiffEqSensitivity.jl/pull/427#issuecomment-866509944).
 
@@ -351,7 +351,7 @@ Note that we have declared the Enzyme backend as `inplace` (which is important f
 
 ## Some current glitches
 
-First, the push forward of a tuple of vectors, e.g., $(v_1, v_2)$, for a function with several input arguments is currently ambiguous. While `AD.jacobian` primitives and `AD.pullback_function` primitives interpret the push forward of our `f` function as
+First, the push forward of a tuple of vectors, e.g., $(v_1, v_2)$, for a function with several input arguments is currently ambiguous. While `AD.jacobian` primitives and `AD.pullback_function` primitives interpret the push forward of our $f$ function as
 
 $$
 \left(\frac{\partial f(x_0,p)}{\partial x} v_1 , \frac{\partial f(x_0,p)}{\partial p} v_2 \right),
