@@ -1,7 +1,7 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "[WIP] Sensitivity Analysis of Hybrid Differential Equations"
+title: "Sensitivity Analysis of Hybrid Differential Equations"
 subtitle: "GSoC 2021 -- third blog post"
 summary: ""
 authors: [Frank Schäfer and Moritz Schauer]
