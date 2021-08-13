@@ -472,7 +472,7 @@ $$
 \lambda_\text{c} = - \left( {\lambda_+}^\dagger f(x({t_N^\star}^+), p({t_N^\star}^+), t^\star_N) \right)\left(\frac{\text{d}g}{\text{d}{t_N^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_N}^-},
 $$
 
-where $\lambda_+$ is the right-hand limit of the adjoint state before the loss gradient ($\lambda_+^\text{0}$ above) was added. Iterate over the remaining events.
+where $\lambda_+$ is the right-hand limit of the adjoint state before the loss gradient ($\lambda_+^\text{0}$ above) was added. Iterate over the remaining $N-1$ events.
 
 
 ## Outlook
