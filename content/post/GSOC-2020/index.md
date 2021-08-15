@@ -40,7 +40,6 @@ The following posts describe the work during the entire period in more detail:
 
 1) [GSoC 2020: High weak order SDE solvers and their utility in neural SDEs](https://frankschae.github.io/post/gsoc2020-high-weak-order-solvers-sde-adjoints/)
 2) [High weak order SDE solvers](https://frankschae.github.io/post/high-weak/)
-3) Adjoint sensitivity methods  -- To be uploaded soon.
 
 ## Docs
 
