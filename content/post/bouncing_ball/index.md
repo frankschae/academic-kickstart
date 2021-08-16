@@ -220,8 +220,10 @@ In addition, the implicitly defined impact time via the `ContinuousCallback` als
 Suppose we let the ball drop from a somewhat higher position now. Does an increase in height at $t=0$ give an increase or decrease in height at the end time $t_\text{end}=1.9$? This is something we can answer with sensitivity analysis. For example if we increase the height by (a fraction of) one unit then
 
 $$
-\frac{\text{d} z_{\rm imp}(t_\text{end})}{\text{d} z_0} = \frac{\text{d} z_{\rm imp}^{(2)}(t_\text{end})}{\text{d} z_0} = 0.84
+\frac{\text{d} z_{\rm imp}(t_\text{end})}{\text{d} z_0} = \frac{\text{d} z_{\rm imp}^{(2)}(t_\text{end})}{\text{d} z_0} = 0.84,
 $$
+
+meaning the height at $t_\text{end}$ is also by a corresponding fraction of 0.84 units higher.
 
 We can verify this visually:
 
