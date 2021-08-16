@@ -48,7 +48,7 @@ $$
 
 The initial condition contains the initial height $z_0$ and initial velocity $v_0$ of the ball. We have two important parameters in this system. First, there is the gravitational constant $g=10$ modeling the acceleration of the ball due to an approximately constant gravitational field. Second, we include a dissipation factor $\gamma=0.8$ ([coefficient of restitution](https://en.wikipedia.org/wiki/Coefficient_of_restitution)) that accounts for a non-perfect elastic bounce on the ground.
 
-We can straightforwardly integrate the ODE analytically
+When ignoring the bounce, we can straightforwardly integrate the ODE analytically
 
 $$
 \begin{aligned}
@@ -93,7 +93,7 @@ savefig(pl,"BB_forward_no_bounce.png")
 
 ## Forward simulation with events
 
-At around $t^\star \approx 1$, the ball hits the ground $z^\star(t^\star) = 0$, and is inelastically reflected while dissipating a fraction of its energy. This discontinuity can be modeled by re-initializing the ODE with new initial conditions
+At around $t^\star \approx 1$, the ball hits the ground $z^\star(t^\star) = 0$, and is inelastically reflected while dissipating a fraction of its energy. This can be modeled by re-initializing the ODE with new initial conditions
 
 $$
 \begin{aligned}  
@@ -156,7 +156,7 @@ cb1 = DiscreteCallback(condition1,affect!,save_positions=(true,true))
 sol1 = solve(prob,Tsit5(),callback=cb1, saveat=0.1, tstops=[tstar])
 ```
 
-Evidently, by choosing an explicit definition of the event, the impact time is fixed. Thus, if we perturb the initial conditions or the parameters, the event location remains at $t^\star = 0.99005$ while it should actually change (for a fixed ground).
+Evidently, by choosing an explicit definition of the event, the impact time is fixed. The reflection event is triggered at $t^\star = 0.99005$, a time where under different initial configurations the ball perhaps hasn’t reached the ground.
 
 
 ### Implicit events
@@ -243,7 +243,7 @@ anim = animate(list_plots,every=1)
 ```
 {{< figure library="true" src="BB.gif" title="" lightbox="true" >}}
 
-The original curve is shown in black in the figure above. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition. Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}t^\star}{\text{d}p}$ or initial conditions $\frac{\text{d}t^\star}{\text{d}z_0}$, $\frac{\text{d}t^\star}{\text{d}v_0}$ must be taken into account.
+The original curve is shown in black in the figure above. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition.
 
 ## Sensitivity analysis with events
 
@@ -259,8 +259,7 @@ $$
 \frac{\text{d}L}{\text{d} \alpha} =  2\sum_i (z(t_i) - y_i) \frac{\text{d}z(t_i)}{\text{d} \alpha}.
 $$
 
-For the bouncing ball, we can easily compute those sensitivities by inserting our results for $z_{\rm imp}(t_i)$ and $z_{\rm exp}(t_i)$. One can verify that the sensitivities are different in the two cases, as expected.
-
+For the bouncing ball, we can easily compute the sensitivity $\frac{\text{d}L}{\text{d} \alpha}$ by inserting our results for $z_{\rm imp}(t_i)$. Using the explicit event $z_{\rm exp}(t_i)$ instead of the implicit event $z_{\rm imp}(t_i)$, a different value for the sensitivity is obtained and not the one we are looking for.
 
 However, in most systems, we won't be able to solve analytically a differential equation
 
@@ -268,7 +267,7 @@ $$
 \text{d}x(t) = f(x,p,t) \text{d}t
 $$
 
-with initial condition $x_0=x(t_0)$. Instead, we have to numerically solve for the state $x(t)$. Regarding the computation of the sensitivities, we may then choose one of the [available algorithms](https://diffeq.sciml.ai/stable/analysis/sensitivity/) for the given differential equation. Currently, `BacksolveAdjoint()`, `InterpolatingAdjoint()`, `QuadratureAdjoint()`, `ReverseDiffAdjoint()`, `TrackerAdjoint()`, and `ForwardDiffAdjoint()` are compatible events in ordinary differential equations. We write the loss function in the following as a function of time, state, and parameters
+with initial condition $x_0=x(t_0)$. Instead, we have to numerically solve for the trajectory $x(t)$. Regarding the computation of the sensitivities, we may then choose one of the [available algorithms](https://diffeq.sciml.ai/stable/analysis/sensitivity/) for the given differential equation. Currently, `BacksolveAdjoint()`, `InterpolatingAdjoint()`, `QuadratureAdjoint()`, `ReverseDiffAdjoint()`, `TrackerAdjoint()`, and `ForwardDiffAdjoint()` are compatible with events in ordinary differential equations. We write the loss function in the following as a function of time, state, and parameters
 
 $$
 \begin{aligned}
@@ -276,7 +275,7 @@ L = L(t,x,p).
 \end{aligned}
 $$
 
-In the following, let us focus on the `BacksolveAdjoint()` algorithm, which computes the sensitivities
+Let us focus on the `BacksolveAdjoint()` algorithm, which computes the sensitivities
 
 $$
 \begin{aligned}
@@ -303,7 +302,7 @@ $$
 \end{aligned}
 $$
 
-The arrows indicate the variable with respect to which we differentiate. Note that computing the vector-Jacobian products (vjp) in the adjoint ODE requires the value of $x(t)$ along its trajectory. In `BacksolveAdjoint()`, we recompute $x(t)$--together with the adjoint variables--backwards in time starting with its final value $x(t_N)$. A derivation of the ODE adjoint is given in [Chris' MIT 18.337 lecture notes](https://mitmath.github.io/18337/lecture11/adjoints).
+The arrows ($\rightarrow$) indicate the variable with respect to which we differentiate. Note that computing the vector-Jacobian products (vjp) in the adjoint ODE requires the value of $x(t)$ along its trajectory. In `BacksolveAdjoint()`, we recompute $x(t)$--together with the adjoint variables--backwards in time starting with its final value $x(t_N)$. A derivation of the ODE adjoint is given in [Chris' MIT 18.337 lecture notes](https://mitmath.github.io/18337/lecture11/adjoints).
 
 ### Explicit events
 
@@ -322,7 +321,7 @@ In particular, we apply a loss function callback before and after this update if
 
 ### Implicit events
 
-#### special case: event as termination condition
+#### Special case: event as termination condition
 
 Define $u(t) = (t, x(t))$. Let us first re-derive the case, where the implicit event terminates the ODE and where we have a loss function acting on $t^\star_1$, $x(t^\star_1)$, and $p$, as considered by Ricky T. Q. Chen, Brandon Amos, and Maximilian Nickel in their ICLR 2021 paper[^4]. We are interested in
 
@@ -330,7 +329,7 @@ $$
 \frac{\text{d}L(u(t^\star_1(\rightarrow p), \rightarrow p), \rightarrow p)}{\text{d}p} = \frac{\text{d}L(t^\star_1({\color{black}\rightarrow} p), \text{solve}(t_0, x_0, t^\star_1({\color{black}\rightarrow}p), \rightarrow p),\rightarrow p)}{\text{d}p},
 $$
 
-which indicates that changing $p$ changes both $t^\star_1$ as well as $x^\star_1$ in $t^\star_1$.
+which indicates that changing $p$ changes both $t^\star_1$ as well as $x^\star_1$ in $t^\star_1$. Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}t^\star}{\text{d}p}$ or initial conditions $\frac{\text{d}t^\star}{\text{d}z_0}$, $\frac{\text{d}t^\star}{\text{d}v_0}$ must be taken into account.
 
 In a first step, we need to compute the sensitivity of $t^\star_1(p)$ with respect to $p$ and $x_0$ based on the event condition $F(t, p) = g(u(t, p)) = 0$.  We can apply the [implicit function theorem](https://www.uni-siegen.de/fb6/analysis/overhagen/vorlesungsbeschreibungen/skripte/analysis3_1.pdf) which yields:
 
@@ -453,7 +452,7 @@ $$
 
 If both limits contribute to the loss function, the contributions are added.
 
-#### generalization: several events
+#### Generalization: several events
 
 As pointed out by Chen et al. as well as by Timo C. Wunderlich and Christian Pehle[^3], one can chain together the events and differentiate through the entire time evolution on a time interval $(t_0, t_{\text{end}})$. That is, we are generally allowed to segment the time evolution over an interval $[t_0, t]$ into one from $[t_0, s]$ and a subsequent one from $[s, t]$:
 
