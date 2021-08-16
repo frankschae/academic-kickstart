@@ -120,8 +120,8 @@ The full trajectory $z_{\rm exp}(t)$ is determined by
 
 $$
 z_{\rm exp}(t) = \begin{cases}
-  z^{1}_{\rm exp}(t) &=z_0 + v_0 t - \frac{g}{2} t^2 &, \forall t \leq t^\star, \\\\
-  z^{2}_{\rm exp}(t) &=-0.4901 g - 0.5 g (-0.99005 + t)^2 +\\\\
+  z^{(1)}_{\rm exp}(t) &=z_0 + v_0 t - \frac{g}{2} t^2 &, \forall t \leq t^\star, \\\\
+  z^{(2)}_{\rm exp}(t) &=-0.4901 g - 0.5 g (-0.99005 + t)^2 +\\\\
   &+0.99005 v_0 + z_0 - (-0.99005 + t) (-0.99005 g + v_0)\gamma  &, \forall t > t^\star,
 \end{cases}
 $$
@@ -188,8 +188,8 @@ for the right limit. Thus, the full trajectory $z_{\rm imp}(t)$ is given by
 
 $$
 z_{\rm imp}(t) = \begin{cases}
-  z^{1}_{\rm imp}(t) &=z_0 + v_0 t - \frac{g}{2} t^2 &, \forall t \leq t^\star ,\\\\
-  z^{2}_{\rm imp}(t) &= -\frac{(-g t + v_0 + \sqrt{v_0^2 + 2 g z_0})}{2 g} \times, \\\\
+  z^{(1)}_{\rm imp}(t) &=z_0 + v_0 t - \frac{g}{2} t^2 &, \forall t \leq t^\star ,\\\\
+  z^{(2)}_{\rm imp}(t) &= -\frac{(-g t + v_0 + \sqrt{v_0^2 + 2 g z_0})}{2 g} \times, \\\\
    &\times (-g t + v_0 + \sqrt{v_0^2 + 2 g z_0} (1 + 2 \gamma)) &, \forall t > t^\star.
 \end{cases}
 $$
@@ -215,7 +215,16 @@ savefig(pl,"BB_forward.png")
 ```
 {{< figure library="true" src="BB_forward.png" title="" lightbox="true" >}}
 
-In addition, the implicitly defined impact time via the `ContinuousCallback` also shifts the impact time when changing the initial conditions or the parameters
+In addition, the implicitly defined impact time via the `ContinuousCallback` also shifts the impact time when changing the initial conditions or the parameters. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition.
+
+Suppose we let the ball drop from a somewhat higher position now. Does an increase in height at $t=0$ give an increase or decrease in height at the end time $t_\text{end}=1.9$? This is something we can answer with sensitivity analysis. For example if we increase the height by (a fraction of) one unit then
+
+$$
+\frac{\text{d} z_{\rm imp}(t_\text{end})}{\text{d} z_0} = \frac{\text{d} z_{\rm imp}^{(2)}(t_\text{end})}{\text{d} z_0} = 0.84
+$$
+
+We can verify this visually:
+
 ```julia
 # animate forward trajectory
 sol3 = solve(remake(prob,u0=[u0[1]+0.5,u0[2]]),Tsit5(),callback=cb2,saveat=0.01)
@@ -243,11 +252,12 @@ anim = animate(list_plots,every=1)
 ```
 {{< figure library="true" src="BB.gif" title="" lightbox="true" >}}
 
-The original curve is shown in black in the figure above. In other words, the event time $t^\star=t^\star(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition.
+The original curve is shown in black in the figure above.
+
 
 ## Sensitivity analysis with events
 
-We are often interested in computing the change of a loss function with respect to changes of the parameters or initial condition. For this purpose, let us first consider the mean square error loss function
+More generally, we are often interested in computing the change of a loss function with respect to changes of the parameters or initial condition. Suppose that you have a mean square error loss function
 
 $$
 L(z,y) = \sum_i(z(t_i) - y_i)^2

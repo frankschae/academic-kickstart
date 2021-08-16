@@ -72,6 +72,8 @@ Merged:
 
 Open:
 
+* [QuadratureAdjoint() for ContinuousCallback](https://github.com/SciML/DiffEqSensitivity.jl/pull/474)
+
 #### AbstractDifferentiation.jl
 
 Merged:
@@ -112,6 +114,7 @@ Merged:
 Merged:
 
 * [Small typo on plot page](https://github.com/SciML/DiffEqDocs.jl/pull/490)
+* [Add docs for shadowing methods](https://github.com/SciML/DiffEqDocs.jl/pull/492)
 
 
 ## Future work
@@ -132,5 +135,5 @@ If you have any further suggestions or comments, check out our slac/zulip channe
 
 ## Acknowledgement
 
-Many thanks to my mentors [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Yingbo Ma](https://github.com/YingboMa), and [Mohamed Tarek](https://github.com/mohamed82008) for their great, ongoing support before, during, and after this project. It was a great opportunity to be part of such an inspiring collaboration. I highly appreciate our quick and flexible meeting times.
+Many thanks to my mentors [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Yingbo Ma](https://github.com/YingboMa), and [Mohamed Tarek](https://github.com/mohamed82008) for their unique, continuous support. It was a great opportunity to be part of such an inspiring collaboration. I highly appreciate our quick and flexible meeting times.
 I would also like to thank [Christoph Bruder](https://quantumtheory-bruder.physik.unibas.ch/en/people/group-members/christoph-bruder/), [Julian Arnold](https://github.com/arnoldjulian), and [Martin Koppenhöfer](https://github.com/mako-git) for helpful comments on my blog posts. Special thanks to [Michael Poli](https://github.com/Zymrael) and [Stefano Massaroli](https://github.com/massastrello) for their suggestions with respect to adjoints for hybrid differential equations. Finally, thanks to the very supportive julia community and to Google's open source program for funding this experience!
