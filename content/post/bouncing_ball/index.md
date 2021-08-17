@@ -421,7 +421,7 @@ $$
 
 This means that if we terminate the ODE integration by an implicit event, we compute the sensitivities as follows (for simplicity we drop terms due to an explicit dependence of the loss function on the parameters or time):
 
-1. use an ODE solver to solve forward until the event is triggered
+1. Use an ODE solver to solve forward until the event is triggered
 $$
 u_i = \text{solve}(t_0, x_0, t^\star_1(p),  p).
 $$
@@ -430,43 +430,44 @@ $u_i(t_i)=(t_i,x_i)$ are the stored values which enter the loss function.
 $$
 \lambda_-^\text{0} = \frac{\text{d}L(t^\star_1(p), \rightarrow \text{solve}(t_0, x_0, t^\star_1(p),  p), p)}{\text{d} u^\star(t^\star_1)}.
 $$
-3. (instead of using the `BacksolveAdjoint()` algorithm with $\lambda_-^\text{0}$ directly,) use the corrected version containing the dependence on the event time. For this, compute  $\frac{\text{d}g}{\text{d}t^\star_1}, \frac{\text{d}g}{\text{d}u^\star_1}$, and $f(x^\star, p, t^\star_1)$.
+
+3. (Instead of using the `BacksolveAdjoint()` algorithm with $\lambda_-^\text{0}$ directly,) use the corrected version containing the dependence on the event time. For this, compute  $\frac{\text{d}g}{\text{d}t^\star_1}, \frac{\text{d}g}{\text{d}u^\star_1}$, and $f(x^\star, p, t^\star_1)$.
 Then, the corrected version of the adjoint is given by
 
 $$
-\lambda_- = - \left( {\lambda_-^\text{0}}^\dagger f(x^\star, p^\star, t^\star_1) \right)\left(\frac{\text{d}g}{\text{d}t^\star_1}\right)^{-1} \frac{\text{d}g}{\text{d}u^\star_1} + \lambda_-^\text{0}.
+{\color{red}\lambda_-} = - \left( {\lambda_-^\text{0}}^\dagger f(x^\star, p^\star, t^\star_1) \right)\left(\frac{\text{d}g}{\text{d}t^\star_1}\right)^{-1} \frac{\text{d}g}{\text{d}u^\star_1} + \lambda_-^\text{0}.
 $$
 
-$\lambda_-$ can then be used as initial condition to $\text{backsolve_adjoint}(\lambda_-, t^\star_1, x(t^\star_1), t_0)$ which backpropagates the adjoint $\lambda_-$ from $t^\star_1$ to $t_0$.
+The correction takes into account a change in the end time and end value of the ODE.  ${\color{red}\lambda_-}$ can then be used as initial condition to $\text{backsolve_adjoint}({\color{red}\lambda_-}, t^\star_1, x^\star(t^\star_1), t_0)$ which backpropagates the adjoint ${\color{red}\lambda_-}$ at the left limit with state $x(t^\star_1)$ from $t^\star_1$ to $t_0$.
 
 
-If there is an additional affect function $a$ associated with the event, i.e. a right limit, we must additionally compute
+4. If there is an additional affect function $a$ associated with the event, i.e. a right limit, we must additionally compute
 
 $$
 \begin{aligned}
-\lambda_+^\text{0} =  \frac{\text{d}L(t^\star_1(p), \rightarrow a\left(\text{solve}(t_0, x_0, t^\star_1(p),  p)\right), p)}{\text{d} u^\star(t^\star_1))}.
+{\lambda_+^0} =  \frac{\text{d}L(t^\star_1(p), \rightarrow a\left(\text{solve}(t_0, x_0, t^\star_1(p),  p)\right), p)}{\text{d} u^\star(t^\star_1))}.
 \end{aligned}
 $$
 
-Compute the vjp as in the case of a 'DiscreteCallback'
+5. Compute the vjp as in the case of a 'DiscreteCallback'
 
 $$
-\lambda_-^\text{0} = {\lambda_+^\text{0}}^\dagger \frac{\text{d} a(\rightarrow x({t_j^\star}^-), p({t_j^\star}^-), {t_j^\star}^-)}{\text{d} x({t_j^\star}^-)}
+\lambda_+^{1} = {\lambda_+^0}^\dagger \frac{\text{d} a(\rightarrow x({t_j^\star}^-), p({t_j^\star}^-), {t_j^\star}^-)}{\text{d} x({t_j^\star}^-)}
 $$
 
 and correct it as above
 
 $$
 \begin{aligned}
-\lambda_- = - \left( {\lambda_-^\text{0}}^\dagger f(x({t_1^\star}^-), p({t_1^\star}^-), t^\star_1) \right)\left(\frac{\text{d}g}{\text{d}{t_1^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_1}^-} + \lambda_-^\text{0}.
+{\color{blue}\lambda_+} = - \left( {\lambda_+^{1}}^\dagger f(x({t_1^\star}^-), p({t_1^\star}^-), t^\star_1) \right)\left(\frac{\text{d}g}{\text{d}{t_1^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_1}^-} + \lambda_+^{1}.
 \end{aligned}
 $$
 
-If both limits contribute to the loss function, the contributions are added.
+6. If both limits contribute to the loss function, the contributions ${\color{red}\lambda_-}$ and ${\color{blue}\lambda_+}$ are added.
 
 #### Generalization: several events
 
-As pointed out by Chen et al. as well as by Timo C. Wunderlich and Christian Pehle[^3], one can chain together the events and differentiate through the entire time evolution on a time interval $(t_0, t_{\text{end}})$. That is, we are generally allowed to segment the time evolution over an interval $[t_0, t]$ into one from $[t_0, s]$ and a subsequent one from $[s, t]$:
+As implied by Chen et al. as well as by Timo C. Wunderlich and Christian Pehle[^3], one can chain together the events and differentiate through the entire time evolution on a time interval $(t_0, t_{\text{end}})$. That is, we are generally allowed to segment the time evolution over an interval $[t_0, t]$ into one from $[t_0, s]$ and a subsequent one from $[s, t]$:
 
 $$
 \text{solve}(t_0, x_0, t, p)  = \text{solve}(s, \text{solve}(t_0, x_0, s, p), t-s, p),
@@ -475,15 +476,34 @@ $$
 such that also loss function contributions are chained. Therefore, we have the following modification:
 
 
-1. Segment the trajectory at the event times. Use $\text{backsolve_adjoint}(\lambda_{0}, t_\text{end}, x(t_\text{end}), t^\star_N)$ to backprogagate the loss function gradient from the final state until the right limit of the last event location.
+7. Segment the trajectory at the event times. Use $\text{backsolve_adjoint}(\lambda^0_\text{end}, t_\text{end}, x(t_\text{end}), t^\star_N)$ to backprogagate the loss function gradient $\lambda^0_\text{end}$ from the end state until the right limit of the last event location, obtaining $\lambda_\text{end}$.
 
-2. In addition to the steps above, subtract a correction:
+8. Compute ${\color{red}\lambda_-}$ as in step 3.
+
+
+9. As in step 4 compute the vjp (but this time with the sum of the two contributions $\lambda_+^0$ and $\lambda_\text{end}$)
 
 $$
-\lambda_\text{c} = - \left( {\lambda_+}^\dagger f(x({t_N^\star}^+), p({t_N^\star}^+), t^\star_N) \right)\left(\frac{\text{d}g}{\text{d}{t_N^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_N}^-},
+\lambda_+^{1} = \left({\lambda_+^0 + \lambda_\text{end}} \right)^\dagger \frac{\text{d} a(\rightarrow x({t_j^\star}^-), p({t_j^\star}^-), {t_j^\star}^-)}{\text{d} x({t_j^\star}^-)}.
 $$
 
-where $\lambda_+$ is the right-hand limit of the adjoint state before the loss gradient ($\lambda_+^\text{0}$ above) was added. Iterate over the remaining $N-1$ events.
+${\color{blue}\lambda_+}$ follows from $\lambda_+^{1}$ as in step 5.
+
+10. Compute an additional correction term:
+
+$$
+{\color{green}\lambda_c} = \left( \lambda_\text{end}^\dagger f(x({t_N^\star}^+), p({t_N^\star}^+), t^\star_N) \right)\left(\frac{\text{d}g}{\text{d}{t_N^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_N}^-},
+$$
+
+<!--$$
+\lambda_\text{c} = + \left( {\lambda_+}^\dagger f(x({t_N^\star}^+), p({t_N^\star}^+), t^\star_N) \right)\left(\frac{\text{d}g}{\text{d}{t_N^\star}^-}\right)^{-1} \frac{\text{d}g}{\text{d}{u^\star_N}^-},
+$$-->
+
+<!--where ${\color{green}\lambda_+}$ is now the right-hand limit of the adjoint state before the loss gradient was added but is used as input as ${\color{green}\lambda_+}$ before. -->
+
+The correction has the opposite sign and corresponds to a change in the starting time and starting value in the later time interval ($t_N, t_\text{end}$) of the ODE.
+
+11. Backpropagate $\lambda^0_N = {\color{red}\lambda_-} + {\color{blue}\lambda_+} + {\color{green}\lambda_c}$ to the next event time $t_{N-1} $ and iterate over the remaining $N-1$ events.
 
 
 ## Outlook

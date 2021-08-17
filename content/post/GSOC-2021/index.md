@@ -69,10 +69,11 @@ Merged:
 * [Remove allocation in NILSS](https://github.com/SciML/DiffEqSensitivity.jl/pull/443)
 * [Handle additional callback case](https://github.com/SciML/DiffEqSensitivity.jl/pull/444)
 * [State-dependent Continuous Callbacks for BacksolveAdjoint](https://github.com/SciML/DiffEqSensitivity.jl/pull/445)
+* [QuadratureAdjoint() for ContinuousCallback](https://github.com/SciML/DiffEqSensitivity.jl/pull/474)
 
 Open:
 
-* [QuadratureAdjoint() for ContinuousCallback](https://github.com/SciML/DiffEqSensitivity.jl/pull/474)
+* [More tests for Neural ODEs with callbacks for different sensitivity algorithms](https://github.com/SciML/DiffEqSensitivity.jl/pull/475)
 
 #### AbstractDifferentiation.jl
 
