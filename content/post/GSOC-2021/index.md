@@ -30,14 +30,14 @@ projects: []
 
 ## Project summary
 
-In this project, we have implemented state-of-the-art sensitivity tools for chaotic dynamical systems, continuous adjoint sensitivity methods for hybrid differential equations, as well as an high level API for automatic differentiation.
+In this project, we have implemented state-of-the-art sensitivity tools for chaotic dynamical systems, continuous adjoint sensitivity methods for hybrid differential equations, as well as a high level API for automatic differentiation.
 
 Possible fields of application for these tools range from model discovery with explicit dosing times in pharmacology, over accurate gradient estimates for chaotic fluid dynamics, to the control of open quantum systems. A more detailed summary is available [on the GSoC page](https://summerofcode.withgoogle.com/projects/#5357798591823872).
 
 
 ## Blog posts
 
-The following blog posts describe the work in more detail throughout the GSoC period:
+The following blog posts describe the work throughout the GSoC period in more detail:
 
 1) [Neural Hybrid Differential Equations](https://frankschae.github.io/post/hybridde/)
 2) [Shadowing Methods for Forward and Adjoint Sensitivity Analysis of Chaotic Systems](https://frankschae.github.io/post/shadowing/)
@@ -78,29 +78,29 @@ Open:
 
 Merged:
 
-*[Fixes gradient, Jacobian, Hessian, and vjp tests](https://github.com/JuliaDiff/AbstractDifferentiation.jl/pull/2)
+* [Fixes gradient, Jacobian, Hessian, and vjp tests](https://github.com/JuliaDiff/AbstractDifferentiation.jl/pull/2)
 
 Open:
 
-*[Add ForwardDiff and Zygote](https://github.com/JuliaDiff/AbstractDifferentiation.jl/pull/3)
+* [Add ForwardDiff and Zygote](https://github.com/JuliaDiff/AbstractDifferentiation.jl/pull/3)
 
 #### OrdinaryDiffEq.jl
 
 Merged:
 
-*[Fix discrete reverse mode for some standard controllers](https://github.com/SciML/OrdinaryDiffEq.jl/pull/1424)
+* [Fix discrete reverse mode for some standard controllers](https://github.com/SciML/OrdinaryDiffEq.jl/pull/1424)
 
 #### SteadyStateDiffEq.jl
 
 Merged:
 
-*[convert alg.tspan to type of prob.u0](https://github.com/SciML/SteadyStateDiffEq.jl/pull/31)
+* [convert alg.tspan to type of prob.u0](https://github.com/SciML/SteadyStateDiffEq.jl/pull/31)
 
 #### DiffEqNoiseProcess.jl
 
 Merged:
 
-*[Allow solvers to use Noise Grid with SVectors](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/94)
+* [Allow solvers to use Noise Grid with SVectors](https://github.com/SciML/DiffEqNoiseProcess.jl/pull/94)
 
 #### StochasticDiffEq.jl
 
@@ -129,11 +129,11 @@ we are planning to
 
 * benchmark the new adjoints,
 * refine the AbstractDifferentiation.jl package and use it within DiffEqSensitivity.jl,
-* add more docs, and examples.
+* add more docs and examples.
 
 If you have any further suggestions or comments, check out our slac/zulip channels #sciml-bridged and #diffeq-bridged or the [Julia language discourse](https://discourse.julialang.org/).
 
 ## Acknowledgement
 
 Many thanks to my mentors [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Yingbo Ma](https://github.com/YingboMa), and [Mohamed Tarek](https://github.com/mohamed82008) for their unique, continuous support. It was a great opportunity to be part of such an inspiring collaboration. I highly appreciate our quick and flexible meeting times.
-I would also like to thank [Christoph Bruder](https://quantumtheory-bruder.physik.unibas.ch/en/people/group-members/christoph-bruder/), [Julian Arnold](https://github.com/arnoldjulian), and [Martin Koppenhöfer](https://github.com/mako-git) for helpful comments on my blog posts. Special thanks to [Michael Poli](https://github.com/Zymrael) and [Stefano Massaroli](https://github.com/massastrello) for their suggestions with respect to adjoints for hybrid differential equations. Finally, thanks to the very supportive julia community and to Google's open source program for funding this experience!
+I would also like to thank [Christoph Bruder](https://quantumtheory-bruder.physik.unibas.ch/en/people/group-members/christoph-bruder/), [Julian Arnold](https://github.com/arnoldjulian), and [Martin Koppenhöfer](https://github.com/mako-git) for helpful comments on my blog posts. Special thanks to [Michael Poli](https://github.com/Zymrael) and [Stefano Massaroli](https://github.com/massastrello) for their suggestions on adjoints for hybrid differential equations. Finally, thanks to the very supportive julia community and to Google's open source program for funding this experience!
