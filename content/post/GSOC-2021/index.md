@@ -70,10 +70,8 @@ Merged:
 * [Handle additional callback case](https://github.com/SciML/DiffEqSensitivity.jl/pull/444)
 * [State-dependent Continuous Callbacks for BacksolveAdjoint](https://github.com/SciML/DiffEqSensitivity.jl/pull/445)
 * [QuadratureAdjoint() for ContinuousCallback](https://github.com/SciML/DiffEqSensitivity.jl/pull/474)
-
-Open:
-
 * [More tests for Neural ODEs with callbacks for different sensitivity algorithms](https://github.com/SciML/DiffEqSensitivity.jl/pull/475)
+* [Support for PeriodicCallbacks in continuous adjoint methods](https://github.com/SciML/DiffEqSensitivity.jl/pull/476)
 
 #### AbstractDifferentiation.jl
 
@@ -90,6 +88,12 @@ Open:
 Merged:
 
 * [Fix discrete reverse mode for some standard controllers](https://github.com/SciML/OrdinaryDiffEq.jl/pull/1424)
+
+#### DiffEqCallbacks.jl
+
+Merged:
+
+* [Introduce a PeriodicCallbackAffect struct](https://github.com/SciML/DiffEqCallbacks.jl/pull/102)
 
 #### SteadyStateDiffEq.jl
 
