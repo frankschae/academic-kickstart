@@ -99,7 +99,14 @@ Merged:
 
 Merged:
 
-* [convert alg.tspan to type of prob.u0](https://github.com/SciML/SteadyStateDiffEq.jl/pull/31)
+* [Convert alg.tspan to type of prob.u0](https://github.com/SciML/SteadyStateDiffEq.jl/pull/31)
+
+#### ChainRules.jl
+
+Merged:
+
+* [Do not differentiate through the construction of BitArray](https://github.com/JuliaDiff/ChainRules.jl/pull/506)
+* [Use splatting in BitArray](https://github.com/JuliaDiff/ChainRules.jl/pull/508)
 
 #### DiffEqNoiseProcess.jl
 
