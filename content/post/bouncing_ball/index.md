@@ -33,7 +33,7 @@ In this post, we discuss sensitivity analysis of differential equations with sta
 $$
 \begin{aligned}
    \text{d}z(t) &= v(t) \text{d}t, \\\\
-   \text{d}v(t) &= -\mathrm g\,  \text{d}t
+   \text{d}v(t) &= -\mathrm g\thinspace  \text{d}t
 \end{aligned}   
 $$
 
@@ -55,7 +55,7 @@ When ignoring the bounces, we can straightforwardly integrate the ODE analytical
 $$
 \begin{aligned}
 z(t) &= z_0 + v_0 t - \frac{\mathrm g}{2} t^2, \\\\
-v(t) &= v_0 - \mathrm g\,  t
+v(t) &= v_0 - \mathrm g\thinspace  t
 \end{aligned}  
 $$
 
@@ -197,7 +197,7 @@ $$
 (\star) \quad z(t) = \begin{cases}
    z_0 + v_0 t - \dfrac{\mathrm g}{2} t^2 ,& \forall t < \tau ,\\\\
     -\dfrac{-\mathrm g t + v_0 + \sqrt{v_0^2 + 2 \mathrm g z_0}}{2 \mathrm g}  \\\\
-   \quad\cdot\; (-\mathrm g t + v_0 + \sqrt{v_0^2 + 2 \mathrm g z_0} (1 + 2 \gamma)), & \forall t \ge \tau.
+   \quad\cdot \space (-\mathrm g t + v_0 + \sqrt{v_0^2 + 2 \mathrm g z_0} (1 + 2 \gamma)), & \forall t \ge \tau.
 \end{cases}
 $$
 
@@ -268,28 +268,44 @@ The original curve is shown in black in the figure above.
 
 ## Sensitivity analysis with events
 
-More generally, we are often interested in computing the change of a loss function with respect to changes of the parameters or initial condition. Suppose that you have a mean square error loss
+In more general terms, the last example can be seen as a loss function acting on $z$ at the end time
 
 $$
-L = \sum_j(z(\tau_j) - y_j)^2
+L^{\text{exp}} = z(t_{\text{end}}),
 $$
 
-with respect to target values $y_i$ at implicit (bounce) times right before or at the event times. Let $\alpha$ denote any of the inputs $(z_0,v_0,g,\gamma)$. The sensitivity with respect to $\alpha$ is then given by the chain rule:
+where the superscript "exp" refers to an explicit definition of the time ($t_{\text{end}}$) at which we evaluate the loss function.  Let $\alpha$ denote any of the inputs $(z_0,v_0,g,\gamma)$. The sensitivity with respect to $\alpha$ is then given by the chain rule
 
 $$
-\frac{\text{d}L}{\text{d} \alpha} =  2\sum_j (z(\tau_j) - y_j) \frac{\text{d}z(\tau_j)}{\text{d} \alpha},
+\frac{\text{d}L^{\text{exp}}}{\text{d} \alpha} = \frac{\text{d}L^{\text{exp}}}{\text{d} z}  \frac{\text{d}z(t_{\text{end}})}{\text{d} \alpha} = \frac{\text{d}z(t_{\text{end}})}{\text{d} \alpha}.
 $$
-where we have to be careful that implicit times $\tau_j$ potentially depend on $\alpha$: Using the location $z(t)$ at the explicit time $t = 0.9905$ instead of the implicit $z(\tau)$, a different value for the sensitivity is obtained  (a value ignoring the changes in $\tau$ and not the one we are looking for), even though $\tau = 0.9905$ too.
 
-More completely, one can have
+Inserting our results for $z(t) = z_{\rm exp}(t)$ instead of $z(t) = z_{\rm imp}(t)$ at $t_{\text{end}}$, a different value for the sensitivity is obtained (a value ignoring the changes in $z$ due to changes in the bouncing time $\tau$), e.g.,
 
-$$L = \sum_j L_j(\tau_j,x(\tau_j),p) + \sum_i L^{\text{ex}}_i(s_j,x(s_i),p)  ,$$
+$$
+\quad \frac{\text{d}L^{\text{exp}}}{\text{d} z_0} = \begin{cases}
+    1 & \text{with } z(t) = z_{\rm exp}(t) ,\\\\
+    0.84 & \text{with } z(t) = z_{\rm imp}(t) .
+\end{cases}
+$$
 
-where we also allow for losses $L_i^{\text{ex}}$ at explicit time points $s_i$ such as $t_{\text{end}}$.
+Besides an explicit description of time points, we may also encounter implicitly defined time points. For example, for the bouncing ball with velocity at the impact time $\tau-$ (i.e., at the left limit) as the quantity of interest,
 
-For the bouncing ball with quantity of interest $L = z(t_{\text{end}})$, we can easily compute the sensitivities $\dfrac{\text{d}L}{\text{d} \alpha}$ by inserting our results for $z(t_{\text{end}})$.
+$$
+L = v(\tau-),
+$$
 
-However, in most systems, we won't be able to solve analytically a differential equation
+we could be interested in the sensitivity of $L$ with respect $g$. Using the velocity $v(t)$ at the explicit time $t = 0.9905$ instead of the implicit $v(\tau-)$, again a different value for the sensitivity is obtained (a value again ignoring the changes in $\tau$ and not the one we are looking for), even though $\tau = 0.9905$ in both cases:
+
+$$
+\quad \frac{\text{d}L}{\text{d} g} = \begin{cases}
+     -0.99005 & \text{with } v(t) = v_{\rm exp}(t) ,\\\\
+     -\frac{g}{\sqrt{v_0^2 + 2 g z_0}} = -0.99995 & \text{ with } v(t) = v_{\rm imp}(t) .
+\end{cases}
+$$
+
+
+Thanks to our analytical results for the bouncing ball, the sensitivity computation has been straightforward up to now. However, in most systems, we won't be able to solve analytically a differential equation
 
 $$
 \text{d}x(t) = f(x,p,t) \text{d}t
@@ -297,6 +313,11 @@ $$
 
 with initial condition $x_0=x(t_0)$. Instead, we have to numerically solve for the trajectory $x(t)$.
 
+More completely, we will in the following derive an adjoint sensitivity method for a loss function
+
+$$L = \sum_j L_j(\tau_j,x(\tau_j),p) + \sum_i L^{\text{exp}}_i(s_j,x(s_i),p)  ,$$
+
+with $L_i^{\text{exp}}$ at explicit time points $s_i$, such as $t_{\text{end}}$, and $L_j(\tau_j,x(\tau_j),p)$ at implicit time points, such as $\tau$, which allows us to compute the sensitivity of $L$ with respect to changes of the parameters or initial condition without the requirement of an analytical solution for $x(t)$.
 
 
 ### Backsolve-Adjoint algorithm for ordinary differential equations
@@ -316,8 +337,8 @@ Let us focus on the `BacksolveAdjoint()` algorithm which computes the sensitivit
 
 $$
 \begin{aligned}
-\frac{\text{d}\,\text{solve}(t_0, x_0, t, p)}{\text{d}x_{0}} &= \lambda(t_{0}),\\\\
-\frac{\text{d}\,\text{solve}(t_0, x_0, t, p)}{\text{d}p} &= \lambda_{p}(t_{0}),
+\frac{\text{d}\thinspace\text{solve}(t_0, x_0, t, p)}{\text{d}x_{0}} &= \lambda(t_{0}),\\\\
+\frac{\text{d}\thinspace\text{solve}(t_0, x_0, t, p)}{\text{d}p} &= \lambda_{p}(t_{0}),
 \end{aligned}
 $$
 
@@ -347,31 +368,31 @@ Note that computing the vector-Jacobian products (vjp) in the adjoint ODE requir
 
 `BacksolveAdjoint()`, essentially the custom primitive differentiation rule of `solve`, is the elementary building block needed to derive sensitivities also in more complicated examples:
 
-Consider a loss depending on the state $x(s_i)$ at fix time points $s_i$ through loss functions $L_i$,
+Consider a loss depending on the state $x(s_i)$ at fix time points $s_i$ through loss functions $L_i^{\text{exp}}$,
 
 $$
-L = \sum_i L_i(s_i, x(s_i), p).
+L^{\text{exp}} = \sum_i L_i^{\text{exp}}(s_i, x(s_i), p).
 $$
 
-Without contortions we can obtain the sensitivity of $L$ in $p$ (or in $x_0$) using the tool we have. For those a bit familiar with automatic differentiation, this is perhaps easiest to see if we write $L$ as pseudo code
+Without contortions we can obtain the sensitivity of $L^{\text{exp}}$ in $p$ (or in $x_0$) using the tool we have. For those a bit familiar with automatic differentiation, this is perhaps easiest to see if we write $L^{\text{exp}}$ as pseudo code
 
 ```julia
 function loss(t0, x0, p)
     x1 = solve(t0, x0, s1, p)
     L = L1(s1, x1, p)
-    x2 = solve(t1, x1, s2, p)
+    x2 = solve(s1, x1, s2, p)
     L += L2(s2, x2, p)
     ...
     return L
 end
 ```
 
-and consider the problem of automatically differentiating it. You'll just need the primitives of `solve`, `L1` and `L2`! The sensitivities can be computed by repeated calls to `BacksolveAdjoint()` on the intervals `(s_i, s_{i+1})` backward in time, taking in the sensitivities $\sum_i L(s_i, x(s_i))$ at times $s_i$, or as single call `BacksolveAdjoint()` with discrete callbacks:
+and consider the problem of automatically differentiating it. You'll just need the primitives of `solve`, `L1` and `L2`! The sensitivities can be computed by repeated calls to `BacksolveAdjoint()` on the intervals `(s_i, s_{i+1})` backward in time, taking in the sensitivities $\sum_i L^{\text{exp}}(s_i, x(s_i), p)$ at times $s_i$, or according to the common notation[^2] as single call `BacksolveAdjoint()` with discrete callbacks:
 
 $$
 \begin{aligned}
-\frac{\text{d}\lambda(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(\rightarrow x(t), p, t)}{\text{d} x(t)} - \frac{\text{d} L_i(\rightarrow x(t), p)}{\text{d} x(t)}^\dagger \delta(t-s_i), \\\\
-\frac{\text{d}\lambda_{p}(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(x(t), \rightarrow p, t)}{\text{d} p} - \frac{\text{d} L_i(  x(t),\rightarrow p)}{\text{d} p}^\dagger \delta(t-s_i) ,
+\frac{\text{d}\lambda(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(\rightarrow x(t), p, t)}{\text{d} x(t)} - \frac{\text{d} L_i^{\text{exp}}(\rightarrow x(t), p)}{\text{d} x(t)}^\dagger \delta(t-s_i), \\\\
+\frac{\text{d}\lambda_{p}(t)}{\text{d}t} &= -\lambda(t)^\dagger \frac{\text{d} f(x(t), \rightarrow p, t)}{\text{d} p} - \frac{\text{d} L_i^{\text{exp}}(  x(t),\rightarrow p)}{\text{d} p}^\dagger \delta(t-s_i).
 \end{aligned}
 $$
 
@@ -392,7 +413,25 @@ Now we can even properly define the `rrule` of `solve` in the sense of `DiffRule
 ### Explicit events
 
 
-To make `BacksolveAdjoint()` compatible with explicit events[^2], we have to store the event times $s_j$ as well as the state $x(s_j-)$ at the left limit of $s_i$.[^5] We then solve the adjoint ODE backwards in time between the events. As soon as we reach an event time $s_j$ from the right, we update the augmented state according to
+To make `BacksolveAdjoint()` compatible with explicit events[^2],
+
+
+```julia
+function loss(t0, x0, p)
+    x1- = solve(t0, x0, s1, p)
+    L = L1-(s1, x1-, p) # saved before affect
+    x1 = a(x1-, p, s1) # affect
+    L += L1(s1, x1, p) # saved after affect
+    x2- = solve(s1, x1, s2, p)
+    L += L2-(s2, x2-, p)
+    x2 = a(x2-, p, s2) # affect
+    L += L2(s2, x2, p)
+    ...
+    return L
+end
+```
+
+we have to store the event times $s_j$ as well as the state $x(s_j-)$ at the left limit of $s_i$.[^5] We then solve the adjoint ODE backwards in time between the events. As soon as we reach an event time $s_j$ from the right, we update the augmented state according to
 
 $$
 \begin{aligned}
@@ -433,6 +472,9 @@ was also considered by Ricky T. Q. Chen, Brandon Amos, and Maximilian Nickel in 
 
 Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}\tau}{\text{d}p}$ must be taken into account. <span style="color:blue">
 Here and in the following we consider only the $p$-dependence of $\tau_$ for simplicity. However, it is straightforward to include a dependence on the initial state $x_0$ in an analogues way[^4]. </span>
+
+<span style="color:blue">
+add time derivative of solve2 </span>
 
 In a first step, we need to compute the sensitivity of $\tau_1(p)$ with respect to $p$ (or $x_0$) based on the event condition $g(t, x(t)) = 0$.  We can apply the [implicit function theorem](https://www.uni-siegen.de/fb6/analysis/overhagen/vorlesungsbeschreibungen/skripte/analysis3_1.pdf). For this, see that $\tau_1(p)$ is implicitly defined by $F(p, \tau_1) = g( \tau_1, \text{solve}(t_0, x_0, \tau_1, p)) = 0$ which yields
 
@@ -620,7 +662,7 @@ The correction has the opposite sign and corresponds to a change in the starting
 
 We are still refining the adjoints in case of implicit discontinuities (`ContinuousCallbacks`). For further information, the interested reader is encouraged to track the associated issues [#383](https://github.com/SciML/DiffEqSensitivity.jl/issues/383) and [#374](https://github.com/SciML/DiffEqSensitivity.jl/issues/374), and [PR #445](https://github.com/SciML/DiffEqSensitivity.jl/pull/445) in the DiffEqSensitivity.jl package.
 
-If you have any questions or comments, please don’t hesitate to contact us (github.com/frankschae)!
+If you have any questions or comments, please don’t hesitate to contact us ([github.com/frankschae](https://github.com/frankschae))!
 
 [^1]: Michael Poli, Stefano Massaroli, et al., arXiv preprint arXiv:2106.04165 (2021).
 [^2]: Junteng Jia, Austin R. Benson, arXiv preprint arXiv:1905.10403 (2019).
