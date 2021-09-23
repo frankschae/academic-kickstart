@@ -37,8 +37,8 @@ links:
   url: "https://journals.aps.org/pre/abstract/10.1103/PhysRevE.99.062107"
 - name: NJP
   url: "https://iopscience.iop.org/article/10.1088/1367-2630/ab7771/meta"
-- name: Arxiv preprint
-  url: "https://arxiv.org/abs/2010.04730"
+- name: PRResearch
+  url: "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.3.033052"
 
 # Slides (optional).
 #   Associate this project with Markdown slides.
