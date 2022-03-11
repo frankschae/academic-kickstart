@@ -337,12 +337,12 @@ Let us focus on the `BacksolveAdjoint()` algorithm which computes the sensitivit
 
 $$
 \begin{aligned}
-\frac{\text{d}\thinspace\text{solve}(t_0, x_0, t, p)}{\text{d}x_{0}} &= \lambda(t_{0}),\\\\
-\frac{\text{d}\thinspace\text{solve}(t_0, x_0, t, p)}{\text{d}p} &= \lambda_{p}(t_{0}),
+\frac{\text{d}\thinspace L(\text{solve}(t_0, x_0, t, p))}{\text{d}x_{0}} &= \lambda(t_{0}),\\\\
+\frac{\text{d}\thinspace L(\text{solve}(t_0, x_0, t, p))}{\text{d}p} &= \lambda_{p}(t_{0}),
 \end{aligned}
 $$
 
-with respect to the initial state and the parameters. It does so by solving an ODE for $\lambda(s)$ in reverse time from $t$ to $t_0$
+of a loss function $L$ acting on the final state with respect to the initial state and the parameters. It does so by solving an ODE for $\lambda(s)$ in reverse time from $t$ to $t_0$
 
 
 
@@ -357,8 +357,8 @@ with initial conditions:
 
 $$
 \begin{aligned}
-\lambda(t)&= 1, \\\\
-\lambda_{p}(t) &= 1.
+\lambda(t)&= \frac{\text{d}\thinspace L(\text{solve}(t_0, x_0, t, p))}{\text{d}x_{T}}, \\\\
+\lambda_{p}(t) &= 0.
 \end{aligned}
 $$
 
@@ -470,11 +470,8 @@ $$\xi_1 = x(\tau_1-).$$
 This case where we have a loss function $L = L_1$ depending on $\tau_1$, $x(\tau_1)$, and $p$
 was also considered by Ricky T. Q. Chen, Brandon Amos, and Maximilian Nickel in their ICLR 2021 paper[^4].
 
-Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}\tau}{\text{d}p}$ must be taken into account. <span style="color:blue">
-Here and in the following we consider only the $p$-dependence of $\tau_$ for simplicity. However, it is straightforward to include a dependence on the initial state $x_0$ in an analogues way[^4]. </span>
-
-<span style="color:blue">
-add time derivative of solve2 </span>
+Therefore, the sensitivity of the event time with respect to parameters $\frac{\text{d}\tau}{\text{d}p}$ must be taken into account.
+Here and in the following we consider only the $p$-dependence of $\tau_1$ for simplicity. However, it is straightforward to include a dependence on the initial state $x_0$ in an analogues way[^4].
 
 In a first step, we need to compute the sensitivity of $\tau_1(p)$ with respect to $p$ (or $x_0$) based on the event condition $g(t, x(t)) = 0$.  We can apply the [implicit function theorem](https://www.uni-siegen.de/fb6/analysis/overhagen/vorlesungsbeschreibungen/skripte/analysis3_1.pdf). For this, see that $\tau_1(p)$ is implicitly defined by $F(p, \tau_1) = g( \tau_1, \text{solve}(t_0, x_0, \tau_1, p)) = 0$ which yields
 
