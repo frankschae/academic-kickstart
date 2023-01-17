@@ -4,7 +4,7 @@
 title: "Machine Learning for Phase Transitions"
 summary: "Data-driven methods based on sample instances of the state of a physical system as a function of the system's parameters."
 authors: [FS in collaboration with Julian Arnold, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
-tags: [Machine learning, neural networks, unsupervised learning]
+tags: [Machine learning, analytical predictors, neural networks, unsupervised learning]
 categories: []
 date: 2021-03-09T23:56:43+01:00
 
@@ -27,7 +27,7 @@ image:
 #   icon_pack: fab
 #   icon: twitter
 
-url_code: "https://github.com/arnoldjulian/Interpretable-and-unsupervised-phase-classification"
+url_code: "https://github.com/arnoldjulian/Replacing-neural-networks-by-optimal-analytical-predictors-for-the-detection-of-phase-transitions"
 url_pdf: ""
 url_slides: ""
 url_video: ""
@@ -39,6 +39,8 @@ links:
   url: "https://iopscience.iop.org/article/10.1088/1367-2630/ab7771/meta"
 - name: PRResearch
   url: "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.3.033052"
+- name: PRX
+  url: "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.12.031044"
 
 # Slides (optional).
 #   Associate this project with Markdown slides.
@@ -48,4 +50,4 @@ links:
 slides: ""
 ---
 
-Fully automated classification methods that yield direct physical insights into phase diagrams are of current interest. We demonstrate the identification of phase boundaries using an unsupervised machine learning method based on the vector-field divergence of the output of a predictive model, as well as using a data-driven scheme which relies on the difference between mean input features. As examples, we consider the anisotropic Ising model, the Kuramoto-Hopf model, Ising gauge theory, the toric code, and the spinless Falicov-Kimball model.
+ Artificial neural networks have successfully been used to identify phase transitions from data and classify data into distinct phases in an automated fashion. The power and success of these approaches (e.g., "learning by confusion" or the "prediction-based method") can be attributed to the ability of deep neural networks to learn arbitrary functions. However, the larger a neural network, the more computational resources are needed to train it, and the more difficult it is to understand its decision making. In this project, we establish a solid theoretical foundation of popular machine-learning methods that rely on neural networks for detecting phase transitions and develop new efficient numerical routines to identify phase transitions directly from data. In the future, our methods could make it possible to detect as yet unknown phase transitions, for instance in quantum simulators or in novel materials.
