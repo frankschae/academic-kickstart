@@ -23,12 +23,12 @@ bio: My research interests include many-body physics, machine learning, and diff
 interests:
 - Machine learning & data-driven approaches
 - Differentiable & probabilistic programming
+- Sensitivity analysis
 - Quantum & stochastic optimal control
 - Parameter inference / estimation theory
 - Stochastic processes
 - Quantum optics
 - Many-body physics
-- Nonlinear dynamics
 
 education:
   courses:
