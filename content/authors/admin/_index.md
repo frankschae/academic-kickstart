@@ -21,16 +21,14 @@ organizations:
 bio: My research interests include many-body physics, machine learning, and differentiable programming.
 
 interests:
-- Scientific machine learning
-- Differentiable programming
-- Automatic differentiation
-- Neural ODEs/SDEs
-- Quantum optimal control
-- Parameter inference
-- ML for phase transitions
+- Machine learning & data-driven approaches
+- Differentiable & probabilistic programming
+- Quantum & stochastic optimal control
+- Parameter inference / estimation theory
+- Stochastic processes
 - Quantum optics
 - Many-body physics
-- Multiple scattering theory
+- Nonlinear dynamics
 
 education:
   courses:
