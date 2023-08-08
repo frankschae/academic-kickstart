@@ -31,6 +31,7 @@ I am delighted that I have been awarded my second GSoC stipend this year.  I loo
 
 This first post aims to illustrate our new (adjoint) sensitivity analysis tools with respect to event handling in (ordinary) differential equations (DEs).
 
+Note: Please check the [SciMLSensitivity.jl docs](https://docs.sciml.ai/SciMLSensitivity/dev/examples/hybrid_jump/hybrid_diffeq/) for a maintained neural hybrid DE tutorial!
 
 ## Hybrid Differential Equations
 DEs with additional explicit or implicit discontinuities are called hybrid DEs. Within the SciML software suite, such discontinuities may be incorporated into DE models by [callbacks](https://diffeq.sciml.ai/stable/features/callback_functions/). Evidently, the incorporation of discontinuities allows a user to specify changes (*events*) in the system, i.e., changes of the state or the parameters of the DE, which cannot be modeled by a plain ordinary DE. While explicit events can be described by [DiscreteCallbacks](https://diffeq.sciml.ai/stable/features/callback_functions/#DiscreteCallback-Examples), implicit events have to be specified by [ContinuousCallbacks](https://diffeq.sciml.ai/stable/features/callback_functions/#ContinuousCallback-Examples). That is, explicit events possess explicit event times, while implicit events are triggered when a continuous function evaluates to `0`. Thus, implicit events require some sort of rootfinding procedure.
