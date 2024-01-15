@@ -24,6 +24,8 @@ image:
 links:
 - name: arXiv preprint
   url: "https://arxiv.org/abs/2304.03366"
+- name: QCE
+  url: "https://ieeexplore.ieee.org/abstract/document/10313626"
 
 url_code: "" # https://github.com/frankschae/Performance-Bounds-for-Quantum-Control
 url_pdf: ""

@@ -3,10 +3,10 @@
 
 title: "Machine Learning for Phase Transitions"
 summary: "Data-driven methods based on sample instances of the state of a physical system as a function of the system's parameters."
-authors: [FS in collaboration with Julian Arnold, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
+authors: [FS in collaboration with Julian Arnold, Flemming Holtorf, Eliska Greplova, Agnes Valenti, Martin Zonda, Axel Lode, Gregor Boschung, Sebastian Huber, and Niels Lörch]
 tags: [Machine learning, analytical predictors, neural networks, unsupervised learning]
 categories: []
-date: 2021-03-09T23:56:43+01:00
+date:  2021-03-09T23:56:43+01:00
 
 # Optional external URL for project (replaces project detail page).
 external_link: ""
@@ -41,6 +41,8 @@ links:
   url: "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.3.033052"
 - name: PRX
   url: "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.12.031044"
+- name: NeurIPS Workshop
+  url: "https://arxiv.org/abs/2311.09128"
 
 # Slides (optional).
 #   Associate this project with Markdown slides.

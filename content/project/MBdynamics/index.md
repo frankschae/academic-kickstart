@@ -28,11 +28,13 @@ image:
 #   icon: twitter
 
 url_code: ""
-url_pdf: "https://www.mdpi.com/1099-4300/22/4/382"
+url_pdf: ""
 url_slides: ""
 url_video: ""
 
 links:
+- name: Entropy
+  url: "https://www.mdpi.com/1099-4300/22/4/382"
 - name: bwHPC proceeding
   url: "https://publikationen.uni-tuebingen.de/xmlui/handle/10900/87664"
 - name: Master thesis
