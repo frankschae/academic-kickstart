@@ -2,9 +2,16 @@
 # Display name
 title: Frank Schäfer
 
-# Username (this should match the folder name)
-authors:
-- admin
+# Name pronunciation (optional)
+# name_pronunciation: Frank Schäfer
+
+# Full name (for SEO)
+first_name: Frank
+last_name: Schäfer
+
+# Status emoji
+status:
+  icon: ☕️
 
 # Is this the primary user of the site?
 superuser: true
@@ -12,7 +19,7 @@ superuser: true
 # Role/position
 role: Postdoctoral researcher
 
-# Organizations/Affiliations
+# Organizations/Affiliations to show in About widget
 organizations:
 - name: Julia Lab @ MIT
   url: ""
@@ -20,6 +27,7 @@ organizations:
 # Short bio (displayed in user profile at end of posts)
 bio: My research interests include many-body physics, machine learning, and differentiable programming.
 
+# Interests to show in About widget
 interests:
 - Machine learning & data-driven approaches
 - Differentiable & probabilistic programming
@@ -30,6 +38,7 @@ interests:
 - Quantum optics
 - Many-body physics
 
+# Education to show in About widget
 education:
   courses:
   - course: PhD in Physics under the supervision of Prof. Dr. Christoph Bruder
@@ -42,10 +51,50 @@ education:
     institution: Department of Physics, Albert-Ludwigs-Universität Freiburg
     year: 2015
 
+# Skills
+# For available icons, see: https://docs.hugoblox.com/getting-started/page-builder/#icons
+# skills:
+#  - name: Technical
+#    items:
+#      - name: Python
+#        description: ''
+#        percent: 80
+#        icon: python
+#        icon_pack: fab
+#      - name: Data Science
+#        description: ''
+#        percent: 100
+#        icon: chart-line
+#        icon_pack: fas
+#      - name: SQL
+#        description: ''
+#        percent: 40
+#        icon: database
+#        icon_pack: fas
+#  - name: Hobbies
+#    color: '#eeac02'
+#    color_border: '#f0bf23'
+#    items:
+#      - name: Hiking
+#        description: ''
+#        percent: 60
+#        icon: person-hiking
+#        icon_pack: fas
+#      - name: Cats
+#        description: ''
+#        percent: 100
+#        icon: cat
+#        icon_pack: fas
+#      - name: Photography
+#        description: ''
+#        percent: 80
+#        icon: camera-retro
+#        icon_pack: fas
+
 # Social/Academic Networking
-# For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
+# For available icons, see: https://docs.hugoblox.com/getting-started/page-builder/#icons
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
-#   form "mailto:your-email@example.com" or "#contact" for contact widget.
+#   form "mailto:your-email@example.com" or "/#contact" for contact widget.
 social:
 - icon: envelope
   icon_pack: fas
@@ -68,14 +117,8 @@ social:
 #   icon_pack: ai
 #   link: files/cv.pdf
 
-# Enter email to display Gravatar (if Gravatar enabled in Config)
-email: ""
-
-# Organizational groups that you belong to (for People widget)
-#   Set this to `[]` or comment out if you are not using People widget.
-user_groups:
-- Researchers
-- Visitors
+# Highlight the author in author lists? (true/false)
+highlight_name: true
 ---
 
 I am a postdoc in the [Julia Lab](https://julia.mit.edu/) located in the Computer Science and Artificial Intelligence Laboratory (CSAIL) at the Massachusetts Institute of Technology (MIT). My research is focused on [Scientific Machine Learning (SciML)](https://sciml.ai/). I completed my PhD in physics in the [Bruder group](https://quantumtheory-bruder.physik.unibas.ch/en/) within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel. During my PhD, I participated in the Google Summer of Code (GSoC) 2020 and 2021 programs with the projects "[High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations](https://summerofcode.withgoogle.com/archive/2020/projects/5076877036748800/)" within the Julia Language organization and "[Neural Hybrid Differential Equations and Adjoint Sensitivity Analysis](https://summerofcode.withgoogle.com/projects/#5357798591823872)"  within the NumFocus organization, supervised by [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Mohamed Tarek](https://github.com/mohamed82008), and [Yingbo Ma](https://github.com/YingboMa). Since 2020, I am a member of the [SciML](https://sciml.ai/) open source software organization for scientific machine learning.
