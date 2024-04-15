@@ -25,18 +25,16 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include many-body physics, machine learning, and differentiable programming.
+bio: My research interests include many-body physics, probabilistic machine learning, and differentiable programming.
 
 # Interests to show in About widget
 interests:
-- Machine learning & data-driven approaches
+- Probabilistic machine learning
 - Differentiable & probabilistic programming
-- Sensitivity analysis
 - Quantum & stochastic optimal control
 - Parameter inference / estimation theory
-- Stochastic processes
-- Quantum optics
-- Many-body physics
+- Stochastic processes and many-body physics
+# - Quantum optics
 
 # Education to show in About widget
 education:
