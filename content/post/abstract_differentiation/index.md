@@ -103,7 +103,7 @@ if do_plot
 end
 ```
 
-{{< figure library="true" src="Rosenbrock.png" title="" lightbox="true" >}}
+{{< figure src="/img/Rosenbrock.png" title="" lightbox="true" >}}
 
 To apply the Gauss-Newton algorithm to the Rosenbrock function $g$, we first cast $g$ into an appropriate form fulfilling $S({\bf x})$, i.e., we use:
 

@@ -94,7 +94,7 @@ savefig(pl,"BB_forward_no_bounce.png")
 ```
 ![](https://i.imgur.com/fKTiDEe.png)
 
-{{< figure library="true" src="BB_forward_no_bounce.png" title="" lightbox="true" >}}
+{{< figure src="/img/BB_forward_no_bounce.png" title="" lightbox="true" >}}
 
 Of course, this way the ball continues to fall through the barrier at $z=0$.
 
@@ -222,7 +222,7 @@ hline!(pl2, [0.0], label=false, color="black")
 pl = plot(pl1,pl2)
 savefig(pl,"BB_forward.png")
 ```
-{{< figure library="true" src="BB_forward.png" title="" lightbox="true" >}}
+{{< figure src="/img/BB_forward.png" title="" lightbox="true" >}}
 
 In addition, the implicitly defined impact time via the `ContinuousCallback` also changes appropriately when changing the initial conditions or the parameters, for example when using  $\mathrm g = 9.81$ for the gravitation constant. In other words, the event time $\tau=\tau(p,z_0,v_0,t_0)$ is a function of the parameters and initial conditions, and is implicitly defined by the event condition.
 
@@ -261,7 +261,7 @@ plot(list_plots[100])
 
 anim = animate(list_plots,every=1)
 ```
-{{< figure library="true" src="BB.gif" title="" lightbox="true" >}}
+{{< figure src="/img/BB.gif" title="" lightbox="true" >}}
 
 The original curve is shown in black in the figure above.
 

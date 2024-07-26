@@ -191,7 +191,7 @@ The object `sim` defined in the last line contains all relevant quantities to te
 Repeating this call to the `test_convergence()` function for the other aforementioned solvers, we obtain the convergence plot:
 
 
-{{< figure library="true" src="weak_conv.png" title="" lightbox="true" >}}
+{{< figure src="/img/weak_conv.png" title="" lightbox="true" >}}
 
 Note that the `SimplifiedEM` and the `EM` scheme fall on top of each other.
 `DRI1()` achieves the smallest errors for a fixed `dt` in this study.
@@ -226,7 +226,7 @@ wp = @time WorkPrecisionSet(ensemble_prob,
 plt = plot(wp;legend=:bottomleft)
 ```
 
-{{< figure library="true" src="WorkPrecision.png" title="" lightbox="true" >}}
+{{< figure src="/img/WorkPrecision.png" title="" lightbox="true" >}}
 
 Therefore, `DRI1` has the best performance in this non-commutative noise case if the error is supposed to stay below 1e-3.
 For larger permitted errors, the `SimplifiedEM` scheme might be a good choice. However, the first order methods
@@ -300,7 +300,7 @@ pl = plot(summ,fillalpha=0.5,xlabel = "time t", yaxis="X(t)", label= ["x₁(t)" 
 
 The time evolution of both dependent variables ($x_1(t)$ and $x_2(t)$) displays damped oscillations.
 
-{{< figure library="true" src="Brusselator_many_trajectories.png" title="" lightbox="true" >}}
+{{< figure src="/img/Brusselator_many_trajectories.png" title="" lightbox="true" >}}
 
 
 We can confirm Rößler's observation[^4] that the adaptive scheme describes the time evolution of the SDE more accurately,
@@ -350,7 +350,7 @@ anim = animate(list_plots,lw=2,every=1)
 ```
 
 
-{{< figure library="true" src="Brusselator.gif" title="" lightbox="true" >}}
+{{< figure src="/img/Brusselator.gif" title="" lightbox="true" >}}
 
 
 

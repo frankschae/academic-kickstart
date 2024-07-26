@@ -97,7 +97,7 @@ plot!(pl1, sol_attractor,vars=(1,2,3), label="attractor",xlims=(-25,30),ylims=(-
 savefig(pl1, "Lorenz_forward.png")
 ```
 
-{{< figure library="true" src="Lorenz_forward.png" title="" lightbox="true" >}}
+{{< figure src="/img/Lorenz_forward.png" title="" lightbox="true" >}}
 
 Here, we separated the trajectory in two parts: We plot the initial transient dynamics starting from random initial conditions towards the attractor in blue and the subsequent time evolution lying entirely on the attractor in orange.
 
@@ -160,7 +160,7 @@ savefig(pl4, "z.png")
 
 We obtain:
 
-{{< figure library="true" src="z.png" title="" lightbox="true" >}}
+{{< figure src="/img/z.png" title="" lightbox="true" >}}
 
 That is, we find a slope of approximately one (almost everywhere except at the kink $\rho\approx 23$), and, therefore, we expect a sensitivity of
 
@@ -234,11 +234,11 @@ plot!(pl1, sol2,vars=(1,2,3), label="Float32", xlims=(-20,25),ylims=(-28,25),zli
 savefig(pl1, "Lorenz_Floats.png")
 ```
 
-{{< figure library="true" src="Lorenz.gif" title="" lightbox="true" >}}
+{{< figure src="/img/Lorenz.gif" title="" lightbox="true" >}}
 
 Without animation:
 
-{{< figure library="true" src="Lorenz_Floats.png" title="" lightbox="true" >}}
+{{< figure src="/img/Lorenz_Floats.png" title="" lightbox="true" >}}
 
 
 

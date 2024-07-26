@@ -110,7 +110,7 @@ LinearAlgebra.norm(Statistics.mean(sol.u)-exp(-tspan[2]))
 
 Repeating this procedure for some more values of `dt`, the log-log plot of the error as a function of `dt` displays nicely the second order convergence (slope $\approx 2.2$).
 
-{{< figure library="true" src="DRI1.png" title="" lightbox="true" >}}
+{{< figure src="/img/DRI1.png" title="" lightbox="true" >}}
 
 
 In the next couple of weeks, my focus will be on
@@ -177,7 +177,7 @@ with $\alpha=1.01$, $\beta=0.87$, $x(0)=1/2$, in the time span ($t_{0}=0$, $t_{1
   sol1 = solve(prob1,EulerHeun(),dt=dt)
 ```
 
-{{< figure library="true" src="animation.gif" title="" lightbox="true" >}}
+{{< figure src="/img/animation.gif" title="" lightbox="true" >}}
 
 
 ### Gradients of diagonal SDEs

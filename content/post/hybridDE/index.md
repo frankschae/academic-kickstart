@@ -89,7 +89,7 @@ prob_data = ODEProblem(oscillator!,u0,tspan)
 pl = plot(solve(prob_data,Tsit5(),saveat=t), label=["x(t)" "v(t)"])
 ```
 
-{{< figure library="true" src="forward_damped_oscillator_no_kicks.png" title="" lightbox="true" >}}
+{{< figure src="/img/forward_damped_oscillator_no_kicks.png" title="" lightbox="true" >}}
 
 We now include a kick to the velocity of the oscillator at regular time steps. Here, we choose both the time difference between the kicks and the increase in velocity as `1`.
 
@@ -112,7 +112,7 @@ pl2 = plot(t_data[1:20],ode_data[1,1:20],label="data x(t)")
 plot!(pl2,t_data[1:20],ode_data[2,1:20],label="data v(t)")
 pl = plot(pl2, pl1, layout=(1,2), xlabel="t")
 ```
-{{< figure library="true" src="forward_damped_oscillator.png" title="" lightbox="true" >}}
+{{< figure src="/img/forward_damped_oscillator.png" title="" lightbox="true" >}}
 The left-hand side shows a zoom for short times to better resolve the kicks. Note that by setting `save_positions=(true,true)`, the kicks would be saved before **and** after the event such that the kicks would appear completely vertically in the plot. The data on the right-hand will be used as training data below. In the spirit of universal differential equations[^6], we now aim at learning (potentially) missing parts of the model from these data traces.
 
 ### High domain knowledge
@@ -158,7 +158,7 @@ pl = plot(solve(prob1,Tsit5(),saveat=t,
   ),label=["x(t)" "v(t)" "u3(t)"])
 ```
 
-{{< figure library="true" src="untrained_nn.png" title="" lightbox="true" >}}
+{{< figure src="/img/untrained_nn.png" title="" lightbox="true" >}}
 
 which (of course) doesn't match the data due to the random initialization of the neural network parameters before training. The neural network can be trained, i.e., its parameters can be optimized, by minimizing a mean-squared error loss function:
 ```julia
@@ -214,7 +214,7 @@ pl3 = plot(solve(prob1,p=p_nn1,Tsit5(),saveat=t,
 pl = plot(pl2,pl3)
 ```
 
-{{< figure library="true" src="trained1.png" title="" lightbox="true" >}}
+{{< figure src="/img/trained1.png" title="" lightbox="true" >}}
 
 We see the expected constant value of `u[3]`, indicating a kick to the velocity of `+=1`, at the kicking times over the full time interval.
 
