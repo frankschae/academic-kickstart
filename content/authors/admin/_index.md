@@ -17,21 +17,21 @@ status:
 superuser: true
 
 # Role/position
-role: Postdoctoral researcher
+role: Senior AI Research Scientist
 
 # Organizations/Affiliations to show in About widget
 organizations:
-- name: Julia Lab @ MIT
+- name: Axiomatic AI
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include many-body physics, probabilistic machine learning, and differentiable programming.
+bio: My research interests include probabilistic machine learning, differentiable programming, and many-body physics.
 
 # Interests to show in About widget
 interests:
 - Probabilistic machine learning
 - Differentiable & probabilistic programming
-- Quantum & stochastic optimal control
+- Stochastic & quantum optimal control
 - Parameter inference / estimation theory
 - Stochastic processes and many-body physics
 # - Quantum optics
@@ -100,6 +100,9 @@ social:
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/_Frank_Schaefer
+- icon: linkedin
+  icon_pack: fab
+  link: https://www.linkedin.com/in/frank-sch%C3%A4fer-91b6342ba/
 - icon: google-scholar
   icon_pack: ai
   link: https://scholar.google.com/citations?user=goAokcEAAAAJ&hl=de&oi=sra#
@@ -119,4 +122,4 @@ social:
 highlight_name: true
 ---
 
-I am a postdoc in the [Julia Lab](https://julia.mit.edu/) located in the Computer Science and Artificial Intelligence Laboratory (CSAIL) at the Massachusetts Institute of Technology (MIT). My research is focused on [Scientific Machine Learning (SciML)](https://sciml.ai/). I completed my PhD in physics in the [Bruder group](https://quantumtheory-bruder.physik.unibas.ch/en/) within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel. During my PhD, I participated in the Google Summer of Code (GSoC) 2020 and 2021 programs with the projects "[High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations](https://summerofcode.withgoogle.com/archive/2020/projects/5076877036748800/)" within the Julia Language organization and "[Neural Hybrid Differential Equations and Adjoint Sensitivity Analysis](https://summerofcode.withgoogle.com/projects/#5357798591823872)"  within the NumFocus organization, supervised by [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Mohamed Tarek](https://github.com/mohamed82008), and [Yingbo Ma](https://github.com/YingboMa). Since 2020, I am a member of the [SciML](https://sciml.ai/) open source software organization for scientific machine learning.
+I am a researcher at [Axiomatic AI](https://axiomatic-ai.com/) where we develop verifiable AI technologies to accelerate progress in science and engineering. Previously, I was a postdoc in the [Julia Lab](https://julia.mit.edu/) located in the Computer Science and Artificial Intelligence Laboratory (CSAIL) at the Massachusetts Institute of Technology (MIT). I completed my PhD in physics in the [Bruder group](https://quantumtheory-bruder.physik.unibas.ch/en/) within the "Quantum Computing and Quantum Technology" PhD school at the University of Basel. During my PhD, I participated in the Google Summer of Code (GSoC) 2020 and 2021 programs with the projects "[High weak order stochastic differential equation solvers and their utility in neural stochastic differential equations](https://summerofcode.withgoogle.com/archive/2020/projects/5076877036748800/)" within the Julia Language organization and "[Neural Hybrid Differential Equations and Adjoint Sensitivity Analysis](https://summerofcode.withgoogle.com/projects/#5357798591823872)"  within the NumFocus organization, supervised by [Chris Rackauckas](https://github.com/ChrisRackauckas), [Moritz Schauer](https://github.com/mschauer), [Mohamed Tarek](https://github.com/mohamed82008), and [Yingbo Ma](https://github.com/YingboMa). Since 2020, I am a member of the [SciML](https://sciml.ai/) open source software organization for scientific machine learning.
